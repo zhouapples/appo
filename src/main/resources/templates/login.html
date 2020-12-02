@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
       <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -245,19 +245,20 @@
                                 <div class="title">
                                     <h3>Login Form</h3>
                                 </div>
-                                <form id="loginform" method="post" name="loginform" action="#">
+                                <form id="loginform" method="post" name="loginform" action="/login">
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control" placeholder="Username">
+                                            <input type="text" name="username" class="form-control" placeholder="Username">
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                            <input type="password" class="form-control" placeholder="Password">
+                                            <input type="password" name="password" class="form-control" placeholder="Password">
                                         </div>
                                     </div>
+                                    <p style="color: red" th:text="${msg}" th:if="@{not #strings.isEmpty(msg)}"></p>
                                     <div class="form-group">
                                         <div class="checkbox">
                                             <label> 
@@ -407,17 +408,17 @@
         <a class="showit scrollToTop" href="#" id="backToTop"><i class="fa fa-angle-up"></i></a>
         <!-- Bootstrap core and JavaScript's
         ================================================== -->
-        <script src="js/jquery-1.10.2.min.js"></script>
-        <script src="js/jquery-migrate-1.2.1.min.js"></script>
-        <script src="js/bootstrap.js"></script>
-        <script src="js/jquery.parallax.js"></script>
-        <script src="js/jquery.fitvids.js"></script>
-        <script src="js/jquery.unveilEffects.js"></script>
-        
-        <script src="js/bootstrap-select.js"></script>
-        <script src="js/jquery.fancybox.pack.js"></script>
-        <script src="js/nicescroll.js"></script>
-        <script src="js/main.js"></script>
+
+        <script src="js/jquery-1.10.2.min.js" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+        <script src="js/jquery-migrate-1.2.1.min.js" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+        <script src="js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+        <script src="js/jquery.parallax.js" th:src="@{/js/jquery.parallax.js}"></script>
+        <script src="js/jquery.fitvids.js" th:src="@{/js/jquery.fitvids.js}"></script>
+        <script src="js/jquery.unveilEffects.js" th:src="@{/js/jquery.unveilEffects.js}"></script>
+        <script src="js/bootstrap-select.js" th:src="@{/js/bootstrap-select.js}"></script>
+        <script src="js/jquery.fancybox.pack.js" th:src="@{/js/jquery.fancybox.pack.js}"></script>
+        <script src="js/nicescroll.js" th:src="@{/js/nicescroll.js}"></script>
+        <script src="js/main.js" th:src="@{/js/main.js}"></script>
 
 
     </body>
