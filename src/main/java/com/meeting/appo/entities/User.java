@@ -7,13 +7,13 @@ public class User {
     private String username;
     private String mobile;
     private String dept;
-    private Date create_date;
+    private String create_date;
     private boolean Admin;
 
     public User() {
     }
 
-    public User(Integer uid, String username, String mobile, String dept, Date create_date, boolean admin) {
+    public User(Integer uid, String username, String mobile, String dept, String create_date, boolean admin) {
         this.uid = uid;
         this.username = username;
         this.mobile = mobile;
@@ -54,11 +54,11 @@ public class User {
         this.dept = dept;
     }
 
-    public Date getCreate_date() {
+    public String getCreate_date() {
         return create_date;
     }
 
-    public void setCreate_date(Date create_date) {
+    public void setCreate_date(String create_date) {
         this.create_date = create_date;
     }
 

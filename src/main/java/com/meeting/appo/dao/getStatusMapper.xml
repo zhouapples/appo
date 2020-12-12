@@ -5,7 +5,24 @@
 <mapper namespace="com.meeting.appo.dao.StatusMapper">
 
     <select id="getStatusList" resultType="com.meeting.appo.entities.Status">
-         select * from appo.tb_status
+        select * from appo.tb_status
     </select>
+
+    <select id="getStatusByUser" parameterType="int" resultType="com.meeting.appo.entities.Status">
+        select * from appo.tb_status where uid = #{uid}
+    </select>
+
+    <insert id="addUser" parameterType="com.meeting.appo.entities.User"  >
+        insert into appo.tb_users(uid, username, mobile, dept, create_date, isAdmin)
+        VALUES (#{uid},#{username},#{mobile},#{dept},#{create_date},${admin})
+    </insert>
+
+    <update id="updateUser" parameterType="com.meeting.appo.entities.User">
+        update appo.tb_users set username=#{myName} where uid=#{uid}
+    </update>
+
+    <delete id="deleteUser" parameterType="int">
+        delete from appo.tb_users where uid=#{uid}
+    </delete>
 
 </mapper>
