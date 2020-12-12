@@ -1,4 +1,4 @@
-package com.meeting.appo.services;
+package com.meeting.appo.dao;
 
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
@@ -6,7 +6,7 @@ import com.meeting.appo.entities.User;
 
 import java.util.List;
 
-public interface Services {
+public interface StatusMapper {
     // 获取所有数据列表
     List<Status> getStatusList();
     //根据日期查询

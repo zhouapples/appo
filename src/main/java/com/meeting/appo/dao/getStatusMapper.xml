@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.meeting.appo.services.Services">
+<mapper namespace="com.meeting.appo.dao.StatusMapper">
 
-    <select id="getStatusList" parameterType="Status" resultType="com.meeting.appo.entities.Status">
-         select * from appo.status limit 10
+    <select id="getStatusList" resultType="com.meeting.appo.entities.Status">
+         select * from appo.tb_status
     </select>
 
 </mapper>
