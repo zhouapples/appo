@@ -51,7 +51,7 @@ public interface StatusMapper {
 
     //删除房间 @Param()只能用在方法的参数上面,而且方法存在多个参数,所有参数都必须加上这个注解
     //@Param这个注解将会把参数传给sql语句,注意@Param中参数名要和数据库字段名一致
-    @Delete("delete from appo.tb_rooms where rid= #{rid} and rflood=#{rflood}")
+    @Delete("delete from appo.tb_rooms where rid= #{rid} && rflood=#{rflood}")
     void deleteRoom(@Param("rid") int bianhao, @Param("rflood") int louceng);
     //删除状态
     void deleteStatue(Integer sid);

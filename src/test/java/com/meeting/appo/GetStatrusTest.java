@@ -73,7 +73,7 @@ public class GetStatrusTest {
     public void deleteRoom(){
         SqlSession sqlSession = MybatisUtils.getSqlSession();
         StatusMapper mapper = sqlSession.getMapper(StatusMapper.class);
-        mapper.deleteRoom(1,401);
+        mapper.deleteRoom(4,101);
         sqlSession.close();
     }
 
@@ -83,7 +83,7 @@ public class GetStatrusTest {
         SqlSession sqlSession = MybatisUtils.getSqlSession();
         StatusMapper mapper = sqlSession.getMapper(StatusMapper.class);
         mapper.addRoom(4,1,"101",10,true,"","2020/10/01");
-        sqlSession.commit();
+
         sqlSession.close();
     }
 

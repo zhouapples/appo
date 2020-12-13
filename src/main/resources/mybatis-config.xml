@@ -16,5 +16,11 @@
     </environments>
     <mappers>
         <mapper resource="com/meeting/appo/dao/getStatusMapper.xml"/>
+<!--        mapper配置文件一般不止一个,所有的*mapper.xml都需要注册后才能使用-->
+<!--        <mapper resource="com/meeting/appo/dao/getStatusMapper.xml"/>-->
+<!--        <mapper resource="com/meeting/appo/dao/getStatusMapper.xml"/>-->
+<!--        <mapper resource="com/meeting/appo/dao/getStatusMapper.xml"/>-->
+<!--        <mapper resource="com/meeting/appo/dao/getStatusMapper.xml"/>-->
+<!--        <mapper resource="com/meeting/appo/dao/getStatusMapper.xml"/>-->
     </mappers>
 </configuration>

@@ -22,7 +22,7 @@ public class MybatisUtils {
     }
 
     public static SqlSession getSqlSession(){
-        return sqlSessionFactory.openSession(true);
+        return sqlSessionFactory.openSession();
         // 将SqlSession返回出去
     }
 
