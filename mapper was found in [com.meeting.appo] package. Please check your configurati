@@ -1,0 +1,53 @@
+[33mcommit 9be1c61f6dd62e0ce06c56b458670a086afdf99b[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: zhouapples <zhouapples@126.com>
+Date:   Sun Dec 13 13:36:11 2020 +0800
+
+    备注,去掉自动提交
+
+[33mcommit 928254a9e25727d361e02121fba0083640321c5e[m
+Author: zhouapples <zhouapples@126.com>
+Date:   Sun Dec 13 13:06:19 2020 +0800
+
+    修改获取SQLSession的utils设置自动提交事务为true
+
+[33mcommit bdfe8dce2be66bfa5c3390088d8dab418a6f878b[m
+Author: zhouapples <zhouapples@126.com>
+Date:   Sun Dec 13 13:02:42 2020 +0800
+
+    使用注解实现mybatis的*mapper.xml绑定
+
+[33mcommit 69d07b4d5f6b0d1916bd7e41c583016014bef034[m
+Author: zhouapples <zhouapples@126.com>
+Date:   Sat Dec 12 12:07:31 2020 +0800
+
+    mybatis crud test success
+
+[33mcommit 7b9fefef3b2cd7a8c0804f58a54835cc80c00c42[m
+Author: zhouapples <zhouapples@126.com>
+Date:   Sat Dec 12 12:06:35 2020 +0800
+
+    mybatis crud test success
+
+[33mcommit bffffabda52fea25124e65b35bfa24a16e732a77[m
+Author: zhouapples <zhouapples@126.com>
+Date:   Sat Dec 12 10:00:14 2020 +0800
+
+    mybatis接入测试完成
+
+[33mcommit 7440f090ba6d303602d858ffda7f709c04ce0aae[m
+Author: zhouapples@126.com <zhouapples@126.com>
+Date:   Fri Dec 11 16:48:25 2020 +0800
+
+    配置mybatis
+
+[33mcommit 866d7af28e1af9ca29ac3b2c69ce15a168bd61dd[m
+Author: zhouapples@126.com <zhouapples@126.com>
+Date:   Wed Dec 2 16:24:34 2020 +0800
+
+    创建pojo
+
+[33mcommit 6c2f9b7e9fb9817f57edec95f76e866b8e6f294e[m
+Author: zhouapples@126.com <zhouapples@126.com>
+Date:   Sat Nov 21 15:22:16 2020 +0800
+
+    first commit
