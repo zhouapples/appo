@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="c01174bd-e129-4e0f-b21d-8422a125607b" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/controller/DetailController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/controller/LoginController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/EventStatusDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/EventStatusDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/getStatusMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/getStatusMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/mybatis-config.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/utils/WebUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/utils/WebUtils.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/about.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agent-properties.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agent.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agents.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/blog-category.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/blog.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/compare-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/contact.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/faq.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/favorites-list.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-2columns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-3columns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-4columns.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-single.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-1.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-2.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-3.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-4.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-5.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-6.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-7.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-8.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list-view.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list-view.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/com/meeting/appo/AppoApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/meeting/appo/AppoApplicationTests.java" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="D:\maven-repository" />
+        <option name="mavenHome" value="C:/Program Files/Java/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="C:\Program Files\Java\apache-maven-3.6.3\conf\settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="1oxD0KSClIQnQM02FezCCAamt13" />
+  <component name="ProjectViewState">
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RequestMappingsPanelOrder0" value="0" />
+    <property name="RequestMappingsPanelOrder1" value="1" />
+    <property name="RequestMappingsPanelWidth0" value="75" />
+    <property name="RequestMappingsPanelWidth1" value="75" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="D:/maven-repository/org/mybatis/mybatis/3.4.6/mybatis-3.4.6.jar!/" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+  </component>
+  <component name="RunManager" selected="Spring Boot.AppoApplication">
+    <configuration name="AppoApplicationTests.getStatusList" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="appo" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.meeting.appo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.meeting.appo" />
+      <option name="MAIN_CLASS_NAME" value="com.meeting.appo.AppoApplicationTests" />
+      <option name="METHOD_NAME" value="getStatusList" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AppoApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="appo" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.meeting.appo.AppoApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AppoApplicationTests.getStatusList" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="c01174bd-e129-4e0f-b21d-8422a125607b" name="Default Changelist" comment="" />
+      <created>1614219130361</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1614219130361</updated>
+      <workItem from="1614219158141" duration="657000" />
+      <workItem from="1614219969669" duration="63000" />
+      <workItem from="1614220123315" duration="54000" />
+      <workItem from="1614220223049" duration="13742000" />
+      <workItem from="1614235838645" duration="2859000" />
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="634" y="249" key="FileChooserDialogImpl" timestamp="1614229645597">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="634" y="249" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1614229645597" />
+    <state width="1380" height="316" key="GridCell.Tab.0.bottom" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.0.bottom/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state width="1380" height="316" key="GridCell.Tab.0.center" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.0.center/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state width="1380" height="316" key="GridCell.Tab.0.left" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.0.left/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state width="1380" height="316" key="GridCell.Tab.0.right" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.0.right/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state width="1380" height="316" key="GridCell.Tab.1.bottom" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.1.bottom/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state width="1380" height="316" key="GridCell.Tab.1.center" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.1.center/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state width="1380" height="316" key="GridCell.Tab.1.left" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.1.left/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state width="1380" height="316" key="GridCell.Tab.1.right" timestamp="1614236960744">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1397" height="244" key="GridCell.Tab.1.right/0.0.1440.860@0.0.1440.860" timestamp="1614225201500" />
+    <state width="1380" height="316" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1614236960744" />
+    <state x="401" y="174" key="SettingsEditor" timestamp="1614228768727">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="301" y="144" key="SettingsEditor/0.0.1440.860@0.0.1440.860" timestamp="1614219244409" />
+    <state x="401" y="174" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1614228768727" />
+    <state x="597" y="332" key="SimpleOpenTaskDialog" timestamp="1614228658991">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="597" y="332" key="SimpleOpenTaskDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1614228658991" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/meeting/appo/controller/DetailController.java</url>
+          <line>12</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

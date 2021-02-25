@@ -61,12 +61,7 @@ public class LoginController {
 
     }
 
-    @GetMapping("/detail/{date}")
-    public String detail(@PathVariable("date") Integer day,Model model){
-        System.out.println(day);
 
-        return "";
-    }
 
 
 
