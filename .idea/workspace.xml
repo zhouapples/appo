@@ -1,41 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="c01174bd-e129-4e0f-b21d-8422a125607b" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/controller/DetailController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/controller/LoginController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/controller/LoginController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/EventStatusDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/EventStatusDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/getStatusMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/getStatusMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/dao/mybatis-config.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/meeting/appo/utils/WebUtils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/meeting/appo/utils/WebUtils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/about.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agent-properties.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agent.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/agents.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/blog-category.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/blog.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/compare-list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/contact.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/faq.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/favorites-list.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-2columns.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-3columns.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-4columns.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/gallery-single.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-1.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-2.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-3.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-4.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-5.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-6.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-7.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/index-8.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/list-view.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/list-view.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/com/meeting/appo/AppoApplicationTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/com/meeting/appo/AppoApplicationTests.java" afterDir="false" />
-    </list>
+    <list default="true" id="c01174bd-e129-4e0f-b21d-8422a125607b" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -137,15 +103,34 @@
       <workItem from="1614219969669" duration="63000" />
       <workItem from="1614220123315" duration="54000" />
       <workItem from="1614220223049" duration="13742000" />
-      <workItem from="1614235838645" duration="2859000" />
+      <workItem from="1614235838645" duration="3085000" />
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="2021-02-25">
+      <created>1614238892227</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1614238892227</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
   </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="2021-02-25" />
+    <option name="LAST_COMMIT_MESSAGE" value="2021-02-25" />
+  </component>
   <component name="WindowStateProjectService">
+    <state x="296" y="151" key="#Deployment" timestamp="1614238866497">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="296" y="151" key="#Deployment/0.0.1920.1040@0.0.1920.1040" timestamp="1614238866497" />
+    <state x="162" y="0" key="CommitChangelistDialog2" timestamp="1614238889805">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="162" y="0" key="CommitChangelistDialog2/0.0.1920.1040@0.0.1920.1040" timestamp="1614238889805" />
     <state x="634" y="249" key="FileChooserDialogImpl" timestamp="1614229645597">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -199,6 +184,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="597" y="332" key="SimpleOpenTaskDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1614228658991" />
+    <state x="297" y="148" key="Vcs.Push.Dialog.v2" timestamp="1614238911117">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="297" y="148" key="Vcs.Push.Dialog.v2/0.0.1920.1040@0.0.1920.1040" timestamp="1614238911117" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
