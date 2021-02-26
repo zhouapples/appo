@@ -5,5 +5,5 @@ import com.meeting.appo.entities.Status;
 import java.util.List;
 
 public interface EventStatusDao {
-    List<Status> getStatusList();
+    List<Status> getStatusList(String day);
 }

@@ -12,8 +12,17 @@ public class Status {
     private String meeting_theme;
     private Integer uid;
     private Boolean status;
+    private User user;
 
     public Status() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Status(Integer sid, Date create_date, Date start_date, Date end_date, Integer rid, String participants, String meeting_theme, Integer uid, Boolean status) {
@@ -26,6 +35,7 @@ public class Status {
         this.meeting_theme = meeting_theme;
         this.uid = uid;
         this.status = status;
+        this.user = new User();
     }
 
     public Integer getSid() {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
      <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,7 +18,6 @@
         <link href="fonts/themify-icons/themify-icons.css" rel="stylesheet">
         <!-- Style CSS -->
         <link href="css/style.css" rel="stylesheet">
-
         <!-- Google Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Lato:400,300,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic' rel='stylesheet' type='text/css'>
@@ -28,10 +27,13 @@
           <script src="js/html5shiv.js"></script>          
         <![endif]-->
         <!-- Favicons -->
-        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon"> 
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
     </head>
-    <body>        
+
+
+
+    <body>
         <!-- /.preloader -->
         <div id="preloader"><div class="clear-loading loading-effect-3"><div><span></span></div></div><h1>Loading</h1></div>
         <div id="top"></div>
@@ -76,7 +78,7 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                     <li><a id="fr" href="#">French</a></li>
                                     <li><a id="de" href="#">Spanish</a></li>
-                                    <li><a id="it" href="#">Japon</a></li> 
+                                    <li><a id="it" href="#">Japon</a></li>
                                 </ul>
                             </div> <!-- End .dropdown -->
                         </div>
@@ -97,19 +99,19 @@
                     <div class="dropdown profile-menu-settings" style="">
 
                         <button class="btn-dropdown dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true">
-                            <img class="img-circle" src="img/demo/team_2.jpg" alt="" width="43" style="border: 1px solid rgb(207, 207, 207);">                                   
+                            <img class="img-circle" src="img/demo/team_2.jpg" alt="" width="43" style="border: 1px solid rgb(207, 207, 207);">
                         </button>
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">                                  
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu3">
                             <li class="">
                                 <a href="profile.html" class="nav-link">
                                     <i class="fa fa-heart"></i> My Profile
                                 </a>
-                            </li>                                 
+                            </li>
                             <li class="">
                                 <a href="my-properties.html" class="nav-link">
                                     <i class="icofont icofont-listine-dots"></i> My properties
                                 </a>
-                            </li>                                 
+                            </li>
                             <li class="nav-item">
                                 <a href="submit.html" class="nav-link">
                                     <i class="icofont icofont-ui-home"></i> Add property
@@ -127,11 +129,11 @@
                             </li>
                             <li class="">
                                 <a href="login.html" class="nav-link">
-                                    <i class="icofont icofont-logout"></i> Log-out         
+                                    <i class="icofont icofont-logout"></i> Log-out
                                 </a>
                             </li>
                         </ul>
-                    </div> <!-- End .dropdown -->     
+                    </div> <!-- End .dropdown -->
                     <!-- Menu ______________ -->
                     </div>
                     <nav class="navbar navbar-default">
@@ -149,9 +151,9 @@
                             <ul class="nav navbar-nav">
                                 <li class="sub-menu-holder dropdown"><a href="index.html">Home</a>
                                     <ul class="sub-menu">
-                                        <li><a href="index.html">Home 01 - Google Map (blue)</a></li> 
-                                        <li><a href="index-1.html">Home 02 - Google Map (dark)</a></li> 
-                                        <li><a href="index-2.html">Home 03 - Google Map (light)</a></li> 
+                                        <li><a href="index.html">Home 01 - Google Map (blue)</a></li>
+                                        <li><a href="index-1.html">Home 02 - Google Map (dark)</a></li>
+                                        <li><a href="index-2.html">Home 03 - Google Map (light)</a></li>
                                         <li><a href="index-3.html">Home 04 - Small Slider (L)</a></li>
                                         <li><a href="index-4.html">Home 05 - Small Slider (R)</a></li>
                                         <li><a href="index-5.html">Home 06 - Image Cover</a></li>
@@ -163,7 +165,7 @@
                                 </li>
                                 <li class="sub-menu-holder dropdown"><a href="#">Properties</a>
                                     <ul class="sub-menu">
-                                        <li><a data-description="List property page " href="list-view.html">List property page</a></li>
+                                        <li><a data-description="List property page " href="status_page.html">List property page</a></li>
                                         <li><a data-description="Grid property page" href="grid-view.html">Grid property page</a></li>
                                         <li><a data-description="Single property page" href="single-property.html">Single Property Page</a></li>
                                         <li><a data-description="Property category page" href="property-category.html">Property Category Page</a></li>
@@ -225,9 +227,9 @@
                         <ul class="breadcrumb">
                             <li><a href="index.html">Home</a></li>
                             <li><a href="#">Pages</a></li>
-                            <li>List view</li>
+                            <li >List view</li>
                         </ul>
-                        <h1>List view</h1> 
+                        <h1 th:text="${msg}">List view</h1>
                     </div>
                 </div>
             </div>
@@ -236,17 +238,26 @@
         <div class="container">
             <div class="row">
                 <div id="content" class="col-lg-8 col-md-8 col-xs-12 clearfix">
-                    <div class="property_wrapper boxes clearfix">
-                        <div class="ImageWrapper boxes_img">
-                            <img class="img-responsive" src="img/demo/01_home.jpg" alt="">
-                            <div class="ImageOverlayH"></div>
-                            <div class="Buttons StyleMg">
-                                <span class="WhiteSquare"><a class="fancybox" href="img/demo/01_home.jpg"><i class="icofont icofont-home-search"></i></a></span>
-                                <span class="WhiteSquare"><a href="single-property.html"><i class="fa fa-link"></i></a></span>
-                            </div><!-- end Buttons -->
-                            <div class="box_type">$2.500.000</div>
-                            <span class="status_type orange"><span class="text">Sale</span></span>
-                        </div><!-- ImageWrapper -->
+                    <div class="property_wrapper boxes clearfix" >
+                        <h4 style="text-align:center">课程表</h4>
+                        <table border="1" cellpadding="10" width="100%" style="text-align: center">
+                            <tr>
+                                <th colspan="">时间\日期</th>
+                                <th>UID</th>
+                                <th>地点</th>
+                                <th>状态</th>
+                            </tr>
+
+                            <tr th:each="sl,index:${statusList}">
+                                <th th:text="${#dates.format(sl.start_date, 'yyyy-MM-dd HH:mm')}+' --> '+${#dates.format(sl.end_date, 'yyyy-MM-dd HH:mm')}">9:30-10:15
+                                </th>
+                                <th th:text="${sl.user.username}">语文</th>
+                                <th th:text="${sl.meeting_theme}">语文</th>
+                                <th th:if="${sl.status eq true }" th:text="已预约">语文</th>
+                                <th th:if="${sl.status eq false }" th:text="已取消">语文</th>
+                            </tr>
+
+                        </table>
 
 
                     </div><!-- end content -->
@@ -257,75 +268,20 @@
 
                 <div id="right_sidebar" class="col-lg-4 col-md-4 col-xs-12 last clearfix">
                     <div class="widget clearfix">
-                        <div class="preperty_search ">
-                            <div class="title">
-                                <h1>Advanced search</h1>
-                            </div>
+                       <button>ROOM1</button>
 
-                            <div class="search-section serach-widget clearfix boxes">
-                                <form id="advanced_search" action="#" class="clearfix row" name="advanced_search" method="post">
-
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="bedrooms">Bedrooms</label>
-                                        <select id="bedrooms" class="show-menu-arrow selectpicker">
-                                            <option value="1">1</option>
-                                            <option value="2">2</option>
-                                            <option value="3">3</option>
-                                            <option value="4">4</option>
-                                            <option value="5">5</option>
-                                            <option value="6">6</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="baths">Baths</label>
-                                        <select id="baths" class="show-menu-arrow selectpicker">
-                                            <option value="1">1</option>
-                                            <option value="1">2</option>
-                                            <option value="1">3</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="min_price">Min Price</label>
-                                        <select id="min_price" class="show-menu-arrow selectpicker">
-                                            <option value="0">$0</option>
-                                            <option value="1000">$1000</option>
-                                            <option value="5000">$5000</option>
-                                            <option value="10000">$10000</option>
-                                            <option value="25000">$25000</option>
-                                            <option value="50000+">$50000+</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="condition">Condition of Use</label>
-                                        <select id="condition" class="show-menu-arrow selectpicker">
-                                            <option value="empty">Empty</option>
-                                            <option value="tenants">Tenants</option>
-                                            <option value="proprietor">Proprietor</option>
-                                            <option value="any">Any</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="from_the">From the</label>
-                                        <select id="from_the" class="show-menu-arrow selectpicker">
-                                            <option value="agent">Agents</option>
-                                            <option value="property_owner">Property Owner</option>
-                                            <option value="any">Any</option>
-                                        </select>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <a href="#" class="btn btn-inverse btn-block"><i class="icofont icofont-home-search"></i> SEARCH PROPERTY</a>
-                                    </div>
-                                </form>
-                            </div><!-- end search module -->
-                        </div>
                     </div>
                     <!--Loan calculator  -->
 
 
                 </div><!-- end sidebar -->
             </div><!-- end row -->
+
+
+
+
+            </div>
+
 
 
 
@@ -339,12 +295,15 @@
         <script src="js/jquery.parallax.js"></script>
         <script src="js/jquery.fitvids.js"></script>
         <script src="js/jquery.unveilEffects.js"></script>
-        
+
         <script src="js/bootstrap-select.js"></script>
         <script src="js/jquery.fancybox.pack.js"></script>
         <script src="js/nicescroll.js"></script>
         <script src="js/main.js"></script>
- 
+
+
+
+
 
     </body>
 </html>

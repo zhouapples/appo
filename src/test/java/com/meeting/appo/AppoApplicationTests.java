@@ -21,7 +21,7 @@ class AppoApplicationTests {
     public void getStatusList(){
         SqlSession sqlSession = WebUtils.getSqlSession();
         EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        List<Status> statusList = mapper.getStatusList();
+        List<Status> statusList = mapper.getStatusList("1993-10-22");
         for (Status s:statusList){
             System.out.println(s);
         }
