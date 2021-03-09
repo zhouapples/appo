@@ -13,6 +13,7 @@ public class Status {
     private Integer uid;
     private Boolean status;
     private User user;
+    private Room room;
 
     public Status() {
     }
@@ -36,6 +37,28 @@ public class Status {
         this.uid = uid;
         this.status = status;
         this.user = new User();
+        this.room = new Room();
+    }
+
+    public Status(Date create_date, Date start_date, Date end_date, Integer rid, String participants, String meeting_theme, Integer uid, Boolean status) {
+        this.create_date = create_date;
+        this.start_date = start_date;
+        this.end_date = end_date;
+        this.rid = rid;
+        this.participants = participants;
+        this.meeting_theme = meeting_theme;
+        this.uid = uid;
+        this.status = status;
+        this.user = new User();
+        this.room = new Room();
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public Integer getSid() {

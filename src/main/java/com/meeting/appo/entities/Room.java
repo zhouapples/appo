@@ -24,6 +24,15 @@ public class Room {
         this.create_date = create_date;
     }
 
+    public Room( Integer rflood, String rserial, Integer seats, boolean available, String comm, Date create_date) {
+        this.rflood = rflood;
+        this.rserial = rserial;
+        this.seats = seats;
+        Available = available;
+        this.comm = comm;
+        this.create_date = create_date;
+    }
+
     public Integer getRid() {
         return rid;
     }

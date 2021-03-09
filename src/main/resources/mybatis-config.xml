@@ -15,7 +15,14 @@
         </environment>
     </environments>
     <mappers>
+        <!--负责打杂-->
         <mapper resource="com/meeting/appo/dao/getStatusMapper.xml"/>
+
+        <!--负责room的增删改查-->
+        <mapper resource="com/meeting/appo/dao/roomCrudMapper.xml"/>
+
+        <!--负责status的增删改查-->
+        <mapper resource="com/meeting/appo/dao/userCrudMapper.xml"/>
 
     </mappers>
 </configuration>

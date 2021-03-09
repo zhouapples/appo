@@ -8,7 +8,7 @@ public class User {
     private String mobile;
     private String dept;
     private Date create_date;
-    private boolean Admin;
+    private boolean Admin=false;
 
     public User() {
     }
@@ -19,7 +19,16 @@ public class User {
         this.mobile = mobile;
         this.dept = dept;
         this.create_date = create_date;
-        Admin = admin;
+        this.Admin = admin;
+    }
+
+    public User(String username, String mobile, String dept, Date create_date, boolean admin) {
+        this.uid = null;
+        this.username = username;
+        this.mobile = mobile;
+        this.dept = dept;
+        this.create_date = create_date;
+        this.Admin = admin;
     }
 
     public Integer getUid() {

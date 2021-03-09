@@ -5,25 +5,29 @@
 <mapper namespace="com.meeting.appo.dao.EventStatusDao">
 
 
-<!--    <select id="getStatusList"  resultType="com.meeting.appo.entities.Status">-->
-<!--         select * from appo.tb_status where date(start_date)=#{day} order by start_date;-->
-<!--    </select>-->
-
     <select id="getStatusList" resultMap="status_and_user">
-         SELECT
-         a.create_date create_date,
-         a.start_date start_date,
-         a.end_date end_date,
-         a.participants participants,
-         a.meeting_theme meeting_theme,
-         a.status status,
-         b.username username,
-         b.mobile mobile,
-         b.dept dept
-         FROM tb_status a , tb_users b where
-         a.uid=b.uid
-         and DATE(a.start_date)=#{day}
-         ORDER BY a.start_date
+        SELECT
+            a.create_date create_date,
+            a.start_date start_date,
+            a.end_date end_date,
+            a.participants participants,
+            a.meeting_theme meeting_theme,
+            a.status status,
+            b.username username,
+            b.mobile mobile,
+            b.dept dept,
+            c.rserial rserial
+        FROM tb_status a , tb_users b ,tb_rooms c
+        <where>
+            a.uid=b.uid
+            and a.status=1
+            and a.rid=c.rid
+            and DATE(a.start_date)=#{day}
+            <if test="rid != null">
+                and c.rid = #{rid}
+            </if>
+        </where>
+        ORDER BY a.create_date
     </select>
     <resultMap id="status_and_user" type="com.meeting.appo.entities.Status">
         <result property="sid" column="sid" />
@@ -39,6 +43,71 @@
             <result property="mobile" column="mobile"/>
             <result property="dept" column="dept"/>
         </association>
+        <association property="room" javaType="com.meeting.appo.entities.Room">
+            <result property="rserial" column="rserial"/>
+        </association>
     </resultMap>
+
+    <select id="getRooms" resultType="com.meeting.appo.entities.Room">
+        select * from appo.tb_rooms
+    </select>
+
+    <select id="getUserByUsername" resultType="map">
+        select * from appo.tb_users where username=#{username}
+    </select>
+
+    <select id="getAdminByUserId" resultType="string">
+        select isAdmin from appo.tb_users where uid=#{id}
+    </select>
+
+
+
+
+
+
+    <select id="getStatusByUser" resultMap="status_profile">
+        SELECT
+        a.sid sid,
+        a.create_date create_date,
+        a.start_date start_date,
+        a.end_date end_date,
+        a.participants participants,
+        a.meeting_theme meeting_theme,
+        a.status status,
+        c.rserial rserial
+        FROM tb_status a ,tb_rooms c
+        <where>
+            a.rid=c.rid
+            and a.uid = #{uid}
+
+            <if test="start_timestamp != null">
+                and UNIX_TIMESTAMP(DATE(a.create_date)) > #{start_timestamp}
+            </if>
+        </where>
+        ORDER BY a.start_date desc
+    </select>
+    <resultMap id="status_profile" type="com.meeting.appo.entities.Status">
+        <result property="sid" column="sid" />
+        <result property="create_date" column="create_date" />
+        <result property="start_date" column="start_date" />
+        <result property="end_date" column="end_date" />
+        <result property="participants" column="participants" />
+        <result property="meeting_theme" column="meeting_theme" />
+        <result property="status" column="status" />
+        <association property="room" javaType="com.meeting.appo.entities.Room">
+            <result property="rserial" column="rserial"/>
+        </association>
+    </resultMap>
+
+
+    <delete id="rmStatusById" parameterType="int">
+        delete from appo.tb_status where sid=#{sid}
+    </delete>
+
+
+    <insert id="addStatus" parameterType="com.meeting.appo.entities.Status">
+        INSERT INTO tb_status(create_date,start_date,end_date,rid,participants,meeting_theme,uid)
+        VALUES(#{status.create_date},#{status.start_date},#{status.end_date},#{status.rid},#{status.participants},#{status.meeting_theme},#{status.uid})
+    </insert>
 
 </mapper>

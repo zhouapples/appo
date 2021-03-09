@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meeting.appo.dao.EventUserDao">
+
+    <insert id="addUser" parameterType="com.meeting.appo.entities.User">
+        insert into appo.tb_users(username, mobile, dept, create_date, isAdmin)
+        VALUES(#{user.username},#{user.mobile},#{user.dept},#{user.create_date},#{user.Admin})
+    </insert>
+
+    <update id="modUser" parameterType="map">
+        update appo.tb_users set username=#{username},mobile=#{mobile},dept=#{dept} where uid=#{uid}
+    </update>
+
+
+</mapper>
