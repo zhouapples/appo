@@ -8,6 +8,10 @@
         VALUES(#{room.rflood},#{room.rserial},#{room.seats},#{room.isAvailable},#{room.comm},#{room.create_date})
     </insert>
 
+    <select id="queryAllRooms" resultType="com.meeting.appo.entities.Room">
+        select rid,rflood,rserial,comm from appo.tb_rooms;
+    </select>
+
 
 
 

@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.meeting.appo.dao.EventRoomDao;
 import com.meeting.appo.dao.EventStatusDao;
 import com.meeting.appo.dao.EventUserDao;
+import com.meeting.appo.entities.Dept;
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
 import com.meeting.appo.entities.User;
 import com.meeting.appo.utils.WebUtils;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -93,9 +95,14 @@ public class ProfileController {
         Map loginUser = (Map)session.getAttribute("loginUser");
         boolean isAdmin = (boolean)loginUser.get("isAdmin");
         if (isAdmin){
-            //渲染数据
-
-
+            SqlSession sqlSession = WebUtils.getSqlSession();
+            EventStatusDao mapperDept = sqlSession.getMapper(EventStatusDao.class);
+            EventRoomDao mapperRoom = sqlSession.getMapper(EventRoomDao.class);
+            List<Dept> deptList = mapperDept.getAllDept();
+            List<Room> roomList = mapperRoom.queryAllRooms();
+            sqlSession.close();
+            model.addAttribute("deptList",deptList);
+            model.addAttribute("roomList",roomList);
 
             return "rs_manage";
         }
@@ -117,11 +124,22 @@ public class ProfileController {
 
     @ResponseBody
     @PostMapping("/profile/addStatus")
-    public String addStatus(HttpServletRequest request) throws JsonProcessingException {
+    public String addStatus(HttpServletRequest request,
+                            HttpServletResponse response,
+                            HttpSession session) throws IOException, ServletException {
+
+        Object loginUser = session.getAttribute("loginUser");
+        if (loginUser==null){
+            //登陆检测，如未登录返回登陆界面
+            request.setAttribute("msg","没有访问权限，请先登录");
+            request.getRequestDispatcher("/login").forward(request,response);
+        }
+
         SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date endDate = null, startDate = null;
         Map<String,Object> statusMap = new HashMap<String,Object>();
         SqlSession sqlSession = WebUtils.getSqlSession();
+        Status conflict = null;
 
         try {
             startDate = sdfm.parse(request.getParameter("start_date"));
@@ -140,28 +158,45 @@ public class ProfileController {
             Status state = new Status(new Date(),startDate,endDate,rid,participants,meetingTheme,uid,status);
 
             EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-            mapper.addStatus(state);
+
+            //查找在目标日期内,该目标房间的所有预约记录
             List<Status> todayStatusList = mapper.getStatusList(new SimpleDateFormat("yyyy-MM-dd").format(startDate),rid+"");
 
-            //判断预约冲突
-            for (Status s:todayStatusList){
-                if ((s.getStart_date().getTime()<startDate.getTime() && startDate.getTime()<s.getEnd_date().getTime()) ||
-                        (s.getStart_date().getTime()>startDate.getTime() && endDate.getTime()>s.getStart_date().getTime()) ||
-                        (s.getStart_date().getTime()<startDate.getTime() && startDate.getTime()>s.getEnd_date().getTime())
-                ){
-                    throw new ParseException(s.toString(),1);
+            //判断预约时间上的冲突
+//            for (Status s:todayStatusList){
+//                if ((s.getStart_date().getTime()<startDate.getTime() && endDate.getTime()<s.getEnd_date().getTime()) ||
+//                        (s.getStart_date().getTime()>startDate.getTime() && endDate.getTime()>s.getStart_date().getTime()) ||
+//                        (s.getStart_date().getTime()<startDate.getTime() && startDate.getTime()<s.getEnd_date().getTime()) ||
+//                        (startDate.getTime()==s.getStart_date().getTime() && startDate.getTime()==s.getEnd_date().getTime()) ||
+//                        (startDate.getTime()<s.getStart_date().getTime() && endDate.getTime()<s.getEnd_date().getTime())
+//                ){
+//                    conflict = s;
+//                    throw new ParseException(s.toString(),1);
+//
+//                }
+
+
+                for (Status s:todayStatusList){
+                    if (!(startDate.getTime() < s.getStart_date().getTime() && endDate.getTime() < s.getStart_date().getTime()) &&
+                            !(startDate.getTime() > s.getEnd_date().getTime())
+                    ){
+                        conflict = s;
+                        throw new ParseException(s.toString(),1);
+
+                    }
                 }
-            }
+
+            mapper.addStatus(state);
             sqlSession.commit();
             sqlSession.close();
             statusMap.put("code",200);
             statusMap.put("msg","命令成功完成");
         } catch (ParseException e) {
             e.printStackTrace();
-            sqlSession.rollback();
             sqlSession.close();
-            statusMap.put("code",500);
-            statusMap.put("errMsg","操作失败");
+            statusMap.put("code",403);
+            statusMap.put("user",conflict.getUser().getUsername());
+            statusMap.put("mobile",conflict.getUser().getMobile());
         }
         return new ObjectMapper().writeValueAsString(statusMap);
     }
@@ -175,10 +210,10 @@ public class ProfileController {
         String dept = request.getParameter("dept");
         String isAdmin = request.getParameter("isAdmin");
         Map<String,String> deptMap = new HashMap<String, String>();
-        deptMap.put("0","震惊部");
-        deptMap.put("1","沸腾部");
-        deptMap.put("2","掉泪部");
-        deptMap.put("3","沉默部");
+        deptMap.put("1","震惊部");
+        deptMap.put("2","沸腾部");
+        deptMap.put("3","掉泪部");
+        deptMap.put("4","沉默部");
 
         admin = !isAdmin.equals("0") && !isAdmin.equals("false");
 
@@ -224,7 +259,40 @@ public class ProfileController {
     }
 
 
+    @ResponseBody
+    @PostMapping("/profile/addDept")
+    public String addDept(HttpServletRequest request) throws JsonProcessingException {
+        String dept_name = request.getParameter("dept_name");
+        boolean is_first_level = !(request.getParameter("is_first_level").equals("0"))&&request.getParameter("is_first_level")!=null;
 
+        int after_level_id;
+        if (is_first_level){
+            after_level_id = 0;
+        }else {
+            after_level_id = Integer.parseInt(request.getParameter("after_level_id"));
+        }
+
+
+
+        int before_level_id=0;
+        String bli = request.getParameter("before_level_id");
+        if (!bli.equals("")){
+            before_level_id = Integer.parseInt(bli);
+        }
+
+        String comment = request.getParameter("comment");
+
+        Dept dept = new Dept(dept_name,before_level_id,after_level_id,comment,is_first_level);
+        SqlSession sqlSession = WebUtils.getSqlSession();
+        EventUserDao mapper = sqlSession.getMapper(EventUserDao.class);
+        mapper.addDept(dept);
+        sqlSession.commit();
+        sqlSession.close();
+
+        HashMap<String, String> map = new HashMap<>();
+        map.put("msg","ok");
+        return new ObjectMapper().writeValueAsString(map);
+    }
 
 
 

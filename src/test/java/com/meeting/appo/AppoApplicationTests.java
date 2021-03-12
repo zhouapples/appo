@@ -25,7 +25,7 @@ class AppoApplicationTests {
     public void getStatusList(){
         SqlSession sqlSession = WebUtils.getSqlSession();
         EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        List<Status> statusList = mapper.getStatusList("2021-03-08",null);
+        List<Status> statusList = mapper.getStatusList("2021-03-10",null);
         for (Status s:statusList){
             System.out.println(s);
         }
@@ -75,7 +75,14 @@ class AppoApplicationTests {
         sqlSession.close();
     }
 
-
+    @Test
+    public void getStatusBySid(){
+        SqlSession sqlSession = WebUtils.getSqlSession();
+        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
+        Status s = mapper.getStatusBySid(1);
+        System.out.println(s);
+        sqlSession.close();
+    }
 
 
 }

@@ -13,5 +13,9 @@
         update appo.tb_users set username=#{username},mobile=#{mobile},dept=#{dept} where uid=#{uid}
     </update>
 
+    <insert id="addDept" parameterType="com.meeting.appo.entities.Dept">
+        insert into appo.tb_depts(dept_name,before_level_id,after_level_id,comment,is_first_level)
+        values(#{dept.dept_name},#{dept.before_level_id},#{dept.after_level_id},#{dept.comment},#{dept.is_first_level})
+    </insert>
 
 </mapper>

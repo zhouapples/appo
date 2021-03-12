@@ -29,6 +29,15 @@
         <!-- Favicons -->
         <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
 
+
+         <!--时间选择器样式-->
+         <link type="text/css" href="css/jquery-ui-1.8.17.custom.css" rel="stylesheet" />
+         <link type="text/css" href="css/jquery-ui-timepicker-addon.css" rel="stylesheet" />
+
+
+
+
+
     </head>
 
 
@@ -36,8 +45,8 @@
     <body>
     <!-- 欢迎信息 -->
     <!-- 欢迎信息 -->
-    <a th:if="${#strings.isEmpty(session.loginUser)}" href="http://localhost:8080/login">登录/注册</a>
-    <a th:if="${not #strings.isEmpty(session.loginUser)}" th:text="${session.loginUser.username}" href="/profile">去我的主页</a>
+    <a class="btn btn-primary" th:if="${#strings.isEmpty(session.loginUser)}" href="http://localhost:8080/login">登录/注册</a>
+    <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" th:text="${session.loginUser.username}" href="/profile">去我的主页</a>
 
 
         <section id="one-parallax" class="post-wrapper-top dm-shadow clearfix parallax" style="background-image: url('img/breadcrumb.jpg');" data-stellar-background-ratio="0.6" data-stellar-vertical-offset="20">
@@ -76,23 +85,25 @@
 
 
 
-                        <table border="1" cellpadding="10" width="100%" style="text-align: center">
+                        <table border="1" cellpadding="5" width="100%" style="text-align: center">
                             <tr>
-                                <th colspan="">时间\日期</th>
+                                <th>时间\日期</th>
                                 <th>UID</th>
                                 <th>地点</th>
                                 <th>主题</th>
                                 <th>状态</th>
                             </tr>
 
-                            <tr th:each="sl,index:${statusList}">
+                            <tr th:each="sl,index:${statusList}" class="each_item" style="cursor:pointer;">
                                 <th th:text="${#dates.format(sl.start_date, 'yyyy-MM-dd HH:mm')}+' --> '+${#dates.format(sl.end_date, 'yyyy-MM-dd HH:mm')}">9:30-10:15
                                 </th>
                                 <th th:text="${sl.user.username}">语文</th>
                                 <th th:text="${sl.room.rserial}">语文</th>
                                 <th th:text="${sl.meeting_theme}">语文</th>
                                 <th th:if="${sl.status eq true }" th:text="已预约">语文</th>
-                                <th th:if="${sl.status eq false }" th:text="已取消">语文</th>
+                                <th th:if="${sl.status   eq false }" th:text="已取消">语文</th>
+                                <input type="hidden" id="itemSid" th:value="${sl.sid}"/>
+
                             </tr>
 
                         </table>
@@ -106,17 +117,17 @@
 
                 <div id="right_sidebar" class=" col-lg-4 col-md-4 col-xs-12 last clearfix">
                     <div class="search-section serach-widget clearfix boxes">
-                        <button style="width: 100%;">占位组件</button>
-                        <form id="advanced_search" action="#" class="clearfix row" name="advanced_search" method="post">
+                        <p style="width: 100%;font-size: large; text-align: center;background-color: #00aff0;color: white;">添加预约信息</p>
+                        <form id="advanced_search"  class="clearfix row" name="advanced_search" method="post">
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label for="start_date">开始时间</label>
-                                <input id="start_date" name="start_date" type="text"/>
+                                <input id="start_date" class="ui_timepicker" name="start_date" type="text"/>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label for="end_date">结束时间</label>
-                                <input id="end_date" name="end_date" type="text"/>
+                                <input id="end_date" class="ui_timepicker" name="end_date" type="text"/>
                             </div>
 
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -127,6 +138,7 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label for="participants">参与者</label>
                                 <input id="participants" name="participants" type="text"/>
+
                             </div>
 
 
@@ -134,22 +146,34 @@
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                 <label for="rid">房间信息</label>
                                 <select id="rid" class="show-menu-arrow selectpicker" name="rid" >
-                                    <option value="agent">1号</option>
-                                    <option value="agencie">2号</option>
-                                    <option value="property_owner">3号</option>
-                                    <option value="any">4号</option>
+                                    <option th:each="room,i:${rooms}" th:value="${room.rid}" th:text="${room.rserial}">1号</option>
                                 </select>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                <label for="uid">操作者</label>
-                                <input id="uid" name="uid" type="text" placeholder="操作者" disabled="true"/>
+
+                                <label for="user">联系人</label>
+                                <input id="user"  th:if="${not #strings.isEmpty(session.loginUser)}" type="text" th:placeholder="${session.loginUser.username}" disabled="true"/>
+                                <input id="user"  th:if="${#strings.isEmpty(session.loginUser)}" type="text"  value="请先登录" disabled="true"/>
                             </div>
 
                             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                <a href="#" class="btn btn-inverse btn-block"><i class="icofont icofont-home-search"></i>提交</a>
+                                <input class="btn btn-inverse btn-block" id="subbtn" value="提交" type="button"/>
                             </div>
+
+                            <input id="status" name="status" value="1" type="hidden"/>
+                            <input id="uid" name="uid" type="hidden"  th:value="${session.loginUser.uid}"/>
                         </form>
                     </div><!-- end search module -->
+                    <label>创建时间:</label><a id="create"></a><br>
+                    <div style="width: 100%;height: 20%;background-color:greenyellow;color:black">
+
+                        <label>【会议主题】:</label><a id="theme"></a><br>
+                        <label>【会议时间】:</label><a id="time"></a><br>
+                        <label>【地点】:</label><a id="place"></a><br>
+                        <label>【参加者】:</label><a id="participant"></a><br>
+                        <label>【联系人】:</label><a id="contact"></a><br>
+                        <label>【联系方式】:</label><a id="mobile"></a>
+                    </div>
 
 
                 </div><!-- end sidebar -->
@@ -179,12 +203,15 @@
         <script src="js/nicescroll.js"></script>
         <script src="js/main.js"></script>
 
+        <!--    时间选择器js -->
+        <script type="text/javascript" src="js/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-1.8.17.custom.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript" src="js/jquery-ui-timepicker-zh-CN.js"></script>
+
+
         <script>
-
-
-
-
-
+            //给url加参数
             $(function () {
                 current = $("#select_date").text();
                 $(".roombut").each(function (i) {
@@ -195,6 +222,137 @@
         </script>
 
 
+        <script>
+            //item鼠标移入移出事件
+            $(function(){
+                oldColor = "";
+                $(".each_item").mouseover(function () {
+                    originColor = $(this).css("background-color");
+                    $(this).css("background-color","yellow");
+                }).mouseout(function () {
+                    $(this).css("background-color",originColor)
+                })
+            });
+
+            $("#subbtn").click(function () {
+                dataS = {
+                    "start_date":$("#start_date").val(),
+                    "end_date":$("#end_date").val(),
+                    "rid":$("#rid").val(),
+                    "participants":$("#participants").val(),
+                    "meeting_theme":$("#meeting_theme").val(),
+                    "status":$("#status").val(),
+                    "uid":$("#uid").val()
+                };
+
+                $.ajax({
+                    url: "/profile/addStatus",
+                    type: 'POST',
+                    dataType:"json",
+                    data:dataS,
+                    success: function(result) {
+                        if (result.user){
+                            alert("预约冲突,请联系 "+result.user+" "+result.mobile);
+                        }else{
+                            alert(result.msg);
+                            $(this).parent()[0].reset();
+                        }
+
+                        },
+                    sync:false
+                });
+            });
+        </script>
+
+        <script>
+            $(".each_item").click(function () {
+                sid = {"sid":$(this).children("input").val()};
+                $.ajax({
+                    url: "/detail/item_detail",
+                    type: 'GET',
+                    dataType:"json",
+                    data:sid,
+                    success: function(result) {
+                        //alert("操作成功"+result);
+                        $("#create").html(result.create_date).css('color','red');
+                        $("#theme").html(result.meeting_theme);
+                        $("#time").html(result.start_date+" 到 "+result.end_date);
+                        $("#place").html(result.rserial);
+                        $("#participant").html(result.participants);
+                        $("#contact").html(result.username);
+                        $("#mobile").html(result.mobile);
+
+                    },
+                    sync:false
+                });
+            });
+        </script>
+
+    <script>
+        $(".ui_timepicker").click(function () {
+            $(this).datetimepicker({
+                //showOn: "button",
+                //buttonImage: "css/images/icon_calendar.gif",
+                //buttonImageOnly: true,
+                showSecond: true,
+                timeFormat: 'hh:mm:ss',
+                stepHour: 1,
+                stepMinute: 1,
+                stepSecond: 1
+            });
+        });
+
+    </script>
+
+
+
+
+        <script>
+            window.alert = function(str)
+            {
+                var shield = document.createElement("DIV");
+                shield.id = "shield";
+                shield.style.position = "absolute";
+                shield.style.left = "0px";
+                shield.style.top = "0px";
+                shield.style.width = "100%";
+                shield.style.height = document.body.scrollHeight+"px";
+        //弹出对话框时的背景颜色
+                shield.style.background = "#fff";
+                shield.style.textAlign = "center";
+                shield.style.zIndex = "25";
+        //背景透明 IE有效
+        //shield.style.filter = "alpha(opacity=0)";
+                var alertFram = document.createElement("DIV");
+                alertFram.id="alertFram";
+                alertFram.style.position = "absolute";
+                alertFram.style.left = "50%";
+                alertFram.style.top = "50%";
+                alertFram.style.marginLeft = "-225px";
+                alertFram.style.marginTop = "-75px";
+                alertFram.style.width = "450px";
+                alertFram.style.height = "150px";
+                alertFram.style.background = "#ff0000";
+                alertFram.style.textAlign = "center";
+                alertFram.style.lineHeight = "150px";
+                alertFram.style.zIndex = "300";
+                strHtml = "<ul style=\"list-style:none;margin:0px;padding:0px;width:100%\">\n";
+                strHtml += " <li style=\"background:#DD828D;text-align:left;padding-left:20px;font-size:14px;font-weight:bold;height:25px;line-height:25px;border:1px solid #F9CADE;\">温馨提示</li>\n";
+                strHtml += " <li style=\"background:#fff;text-align:center;font-size:12px;height:120px;line-height:120px;border-left:1px solid #F9CADE;border-right:1px solid #F9CADE;\">"+str+"</li>\n";
+                strHtml += " <li style=\"background:#FDEEF4;text-align:center;font-weight:bold;height:25px;line-height:25px; border:1px solid #F9CADE;\"><input type=\"button\" value=\"确 定\" onclick=\"doOk()\" /></li>\n";
+                strHtml += "</ul>\n";
+                alertFram.innerHTML = strHtml;
+                document.body.appendChild(alertFram);
+                document.body.appendChild(shield);
+                var ad = setInterval("doAlpha()",5);
+                this.doOk = function(){
+                    alertFram.style.display = "none";
+                    shield.style.display = "none";
+                }
+                alertFram.focus();
+                document.body.onselectstart = function(){return false;};
+            }
+        </script>
 
 
     </body>

@@ -59,7 +59,7 @@ public class LoginController {
                 map.put("uid",userMap.get("uid"));
                 map.put("username",username);
                 map.put("mobile",userMap.get("mobile"));
-                map.put("dept",userMap.get("dept"));
+                map.put("dept",userMap.get("dept_name"));
                 map.put("isAdmin",userMap.get("isAdmin"));
                 session.setAttribute("loginUser",map);
             }

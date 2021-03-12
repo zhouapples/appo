@@ -18,6 +18,7 @@
         <link href="fonts/themify-icons/themify-icons.css" rel="stylesheet">
         <!-- Style CSS -->
         <link href="css/style.css" rel="stylesheet">
+        <link href="css/jquery-ui.css" rel="stylesheet">
 
         <!-- Google Fonts -->
         <link href='http://fonts.googleapis.com/css?family=Lato:400,300,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
@@ -44,6 +45,10 @@
         <section class="top_bar">
             <div class="container">
                 <a>顶栏占位</a>
+                <a class="btn btn-primary" href="/index">回到主页</a>&nbsp;
+                <a class="btn btn-primary" th:if="${#strings.isEmpty(session.loginUser)}" href="http://localhost:8080/login">登录/注册</a>
+                <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/profile">我的主页</a>&nbsp;
+                <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/logout">一键登出</a>
             </div>
         </section>
 
@@ -55,7 +60,7 @@
                     <div class="widget clearfix">
                         <div class="preperty_search ">
                             <div class="title">
-                                <h3>Add Status</h3>
+                                <h3>增加预约信息</h3>
                             </div>
 
                             <form action="/profile/addStatus" class="boxes " method="post" style="padding: 20px 10px;" id="addStatus">
@@ -72,11 +77,9 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="rid">房号</label>
-                                    <select class="form-control" id="rid" name="rid">
-                                        <option selected value=1>401</option>
-                                        <option value=2>402</option>
-                                        <option value=3>403</option>
+                                    <label for="rid">会议室</label>
+                                    <select class="form-control" id="rid"  name="rid" >
+                                        <option th:each="f,i:${roomList}" th:value="${f.rid}" th:text="${f.comm}"></option>
                                     </select>
                                 </div>
                                 <div class="form-group">
@@ -108,13 +111,13 @@
                 <div class="widget col-lg-4 col-md-4  col-xs-12 last clearfix">
                     <div class="preperty_search">
                         <div class="title">
-                            <h3>Add Room</h3>
+                            <h3>增加会议室</h3>
                         </div>
 <!--form2-->
                         <form action="/profile/addRoom" class="boxes" method="post" style="padding: 20px 10px;" id="addRoom">
                             <div class="form-group">
                                 <label for="rflood">楼层</label>
-                                <input class="form-control" id="rflood"  name="rflood"  type="text">
+                                <input id="rflood" name="rflood" type="text" class="form-control"/>
                             </div>
                             <!-- End .single_form -->
                             <div class="form-group">
@@ -157,7 +160,7 @@
                 <div class="widget col-lg-4 col-md-4  col-xs-12 last clearfix">
                     <div class="preperty_search ">
                         <div class="title">
-                            <h3>Add User</h3>
+                            <h3>增加用户</h3>
                         </div>
                         <form action="/profile/addUser" class="boxes" method="post" style="padding: 20px 10px;" id="addUser">
 
@@ -175,9 +178,7 @@
                             <div class="form-group">
                                 <label for="dept">部门</label>
                                 <select class="form-control" id="dept" name="dept">
-                                    <option selected value="0">沉默部</option>
-                                    <option value="1">震惊部</option>
-                                    <option value="2">沸腾部</option>
+                                    <option th:each="d,i:${deptList}" th:value="${d.did}" th:text="${d.dept_name}">沉默部</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -207,8 +208,50 @@
 
         <section class="generalwrapper dm-shadow clearfix">
             <div class="container">
-                <label for="haha">占位输入</label>
-                <input id="haha" placeholder="占位符" height="60px" width="100%" type="text" />
+                <div class="widget col-lg-4 col-md-4  col-xs-12 last clearfix">
+                    <div class="preperty_search ">
+                        <div class="title">
+                            <h3>增加部门信息</h3>
+                        </div>
+                        <form action="/profile/addDept" class="boxes" method="post" style="padding: 20px 10px;" id="addDept">
+
+                            <!-- End .single_form -->
+                            <div class="form-group">
+                                <label for="dept_name">部门名称</label>
+                                <input class="form-control" id="dept_name"  name="dept_name"  type="text">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="is_first_level">是否一级部门</label>
+                                <select class="form-control" id="is_first_level" name="is_first_level">
+                                    <option  value="1">是</option>
+                                    <option selected value="0">否</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="before_level_id">上级部门</label>
+                                <input class="form-control" id="before_level_id"  name="before_level_id" placeholder="非必须">
+                            </div>
+                            <!-- End .single_form -->
+                            <div class="form-group">
+                                <label for="after_level_id">下级部门</label>
+                                <input class="form-control" id="after_level_id"  name="after_level_id"  type="text" placeholder="非必须">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="comment">备注</label>
+                                <input class="form-control" id="comment"  name="comment"  type="text">
+                            </div>
+
+
+
+
+                            <!-- End .single_form -->
+                            <input class="btn btn-primary search width-100-100 subBtnUser"  type="button" value="提交"/>
+                        </form>
+                    </div>
+                </div>
 
             </div>
         </section><!-- end generalwrapper -->
@@ -227,6 +270,8 @@
         <script src="js/jquery.fancybox.pack.js"></script>
         <script src="js/nicescroll.js"></script>
         <script src="js/main.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.js"></script>
+
 
         <!-- FlexSlider JavaScript
     ================================================== -->
@@ -317,7 +362,6 @@
                         "status":$("#status").val(),
                         "uid":$("#uid").val()
                     };
-                    $(this).parent().attr("action")
                     $.ajax({
                         url: $(this).parent().attr("action"),
                         type: 'POST',
@@ -332,6 +376,42 @@
             });
 
         </script>
+
+    <script>
+        $("#is_first_level").change(function () {
+            iflevel = $("#is_first_level option:selected").val();
+            if (iflevel==1){
+                $("#before_level_id").attr("disabled",true);
+            }else {
+                $("#before_level_id").attr("disabled",false);
+            }
+        });
+
+        $(".subBtnUser").click(function () {
+            dataD = {
+                "dept_name":$("#dept_name").val(),
+                "is_first_level":$("#is_first_level").val(),
+                "after_level_id":$("#after_level_id").val(),
+                "comment":$("#comment").val(),
+                "before_level_id":$("#before_level_id").val()
+            };
+
+            $.ajax({
+                url: $(this).parent().attr("action"),
+                type: 'POST',
+                data:dataD,
+                success: function(result) {
+                    alert(result);
+                }
+            })
+        })
+
+
+    </script>
+
+
+
+
 
     </body>
 </html>

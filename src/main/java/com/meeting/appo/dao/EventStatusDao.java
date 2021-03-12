@@ -1,5 +1,6 @@
 package com.meeting.appo.dao;
 
+import com.meeting.appo.entities.Dept;
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
 import com.meeting.appo.entities.User;
@@ -28,5 +29,13 @@ public interface EventStatusDao {
 
     //查全
     List<Status> queryAllStatus();
+
+    //通过id查
+    Status getStatusBySid(Integer sid);
+
+    //查全部部门
+    List<Dept> getAllDept();
+
+
 
 }

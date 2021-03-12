@@ -35,7 +35,7 @@
     <body>        
         <!-- 欢迎信息 -->
         <a class="btn btn-primary" th:if="${#strings.isEmpty(session.loginUser)}" href="http://localhost:8080/login">登录/注册</a>
-        <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" th:text="${session.loginUser.username}" href="/profile"></a><br>
+        <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/profile">我的主页</a>&nbsp;
         <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/logout">一键登出</a>
 
 
