@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Bootstrap Real Estate Website Template">
+        <meta name="author" content="KimaroTec">
+
+        <title>Home</title>
+
+        <!-- Bootstrap core CSS -->
+        <link href="css/normalize.css" rel="stylesheet">
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/animate.css" rel="stylesheet">
+        <!-- Ico font CSS -->
+        <link href="fonts/font-awesome/css/font-awesome.css" rel="stylesheet">
+        <link href="fonts/icofont/css/icofont.css" rel="stylesheet">
+        <link href="fonts/themify-icons/themify-icons.css" rel="stylesheet">
+        <!-- Style CSS -->
+        <link href="css/style.css" rel="stylesheet">
+
+        <!-- Google Fonts -->
+        <link href='http://fonts.googleapis.com/css?family=Lato:400,300,400italic,700,700italic,900' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic' rel='stylesheet' type='text/css'>
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <link rel="stylesheet" th:href="@{/webjars/bootstrap/4.5.3/css/bootstrap.css}" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+        <!--[if lt IE 9]>
+          <script src="js/html5shiv.js"></script>
+        <![endif]-->
+        <!-- Favicons -->
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+
+    </head>
+    <body>        
+        <!-- 欢迎信息 -->
+        <a class="btn btn-primary" th:if="${#strings.isEmpty(session.loginUser)}" href="http://localhost:8080/login">登录/注册</a>
+        <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/profile">我的主页</a>&nbsp;
+        <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/logout">一键登出</a>
+
+
+        <section class="clearfix dm-shadow">
+            <div class="map">
+
+                <div id="map">
+                    <div align="left" style="font-size: 25px; margin-left:20px;margin-top: 10px" >
+                        <script language="javascript">
+                            var my = new Date();
+
+                            function showc() {
+                                var k=1;
+                                var j=1;
+                                var today;
+                                var tomonth;
+                                var theday=1;//日期
+                                var max;
+                                var temp;
+                                var tempday;//这个月第一天的星期
+                                document.write ("<b>" + my.getFullYear() + "-" + (my.getMonth()+1) + "</b>");
+                                document.write ("<table border='1' width='682.5' height='395'>");
+                                document.write ("<tr>");
+                                document.write ("<td height='57.5' width='97.5'><font color='red'>Sun</font></td>");
+                                document.write ("<td height='57.5' width='97.5'>Mon</td>");
+                                document.write ("<td height='57.5' width='97.5'>Tue</td>");
+                                document.write ("<td height='57.5' width='97.5'>Wed</td>");
+                                document.write ("<td height='57.5' width='97.5'>Thu</td>");
+                                document.write ("<td height='57.5' width='97.5'>Fri</td>");
+                                document.write ("<td height='57.5' width='97.5'>Sat</td>");
+                                document.write ("</tr>");
+                                temp=my.getDate();
+                                my.setDate(1);
+                                //document.write (my.getDate());
+                                tempday=my.getDay();//返回第一天是星期几
+                                my.setDate(temp);
+                                today=my.getDay();//返回现在星期几
+
+                                switch ((my.getMonth()+1)) {
+                                    case 1:
+                                    case 3:
+                                    case 5:
+                                    case 7:
+                                    case 8:
+                                    case 10:
+                                    case 12:
+                                        max=31;
+                                        break;
+                                    case 4:
+                                    case 6:
+                                    case 9:
+                                    case 11:
+                                        max=30;
+                                        break;
+                                    default:
+                                        max=29;//这里没有考虑闰月！！
+                                    //document.write (max);
+                                }
+                                for(k=0;k<6;k++) {
+                                    document.write ("<tr>");
+                                    for(j=0;j<=6;j++) {
+                                        document.write ("<td height='23' width='39'>");
+                                        if(j>=(tempday)) {
+                                            tempday=0;//设置为最小，相当于取消判断条件
+                                            if(theday<=max) {
+                                                document.write ("<a title=" + my.getFullYear() + "-" + (my.getMonth()+1) + "-" +theday + " target='_blank' href=detail?date=" + my.getFullYear() + "-" + (my.getMonth()+1) + "-" +theday + ">");
+                                                if(theday==my.getDate())
+                                                    document.write ("<font color='green'>【" + theday + "】</font></a>");
+                                                else if(j==0)
+                                                    document.write ("<font color='red'>" + theday + "</font></a>");
+                                                else
+                                                    document.write (theday + "</a>");
+                                                theday++;
+                                            }
+                                        }
+                                        document.write ("</td>");
+                                    }
+                                    document.write ("</tr>");
+                                }
+                                document.write ("</table>");
+                            }
+
+                            showc();
+                        </script>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+                            <div class="search-section clearfix map-search" data-effect="slide-right">
+                                <form id="advanced_search" action="/searchResult" class="clearfix" name="search" method="get">
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="location">区域 </label>
+                                        <select id="location" class="show-menu-arrow selectpicker" name="name">
+                                            <option value="Yokohama">横滨 </option>
+                                            <option value="Kyoto">东京</option>
+                                            <option value="oosaka">大阪</option>
+                                            <option value="Tokyo City">东京都</option>
+                                            <option value="Nagoya">名古屋</option>
+                                            <option value="nagatu">长津</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="sub-location">Sub Location</label>
+                                        <select id="sub-location" class="show-menu-arrow selectpicker" name="age">
+                                            <option value="Yokohama ">Yokohama </option>
+                                            <option value="Kyoto">Kyoto</option>
+                                            <option value="bodrum">Bodrum</option>
+                                            <option value="Tokyo City">Tokyo City</option>
+                                            <option value="Nagatu">Nagatu</option>
+                                            <option value="ngasaki">ngasaki</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="status">Status</label>
+                                        <select id="status" class="show-menu-arrow selectpicker" name="gender">
+                                            <option value="rent">On Rent</option>
+                                            <option value="sale">On Sale</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="type">Type</label>
+                                        <select id="type" class="show-menu-arrow selectpicker">
+                                            <option value="apertment">Apertment</option>
+                                            <option value="condo">Condo</option>
+                                            <option value="villa">Villa</option>
+                                            <option value="cottage">Cottage</option>
+                                            <option value="house">House</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="min_price">Min Price</label>
+                                        <select id="min_price" class="show-menu-arrow selectpicker">
+                                            <option value="0">$0</option>
+                                            <option value="1000">$1000</option>
+                                            <option value="5000">$5000</option>
+                                            <option value="10000">$10000</option>
+                                            <option value="25000">$25000</option>
+                                            <option value="50000+">$50000+</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                        <label for="from_the">From the</label>
+                                        <select id="from_the" class="show-menu-arrow selectpicker">
+                                            <option value="agent">Agents</option>
+                                            <option value="property_owner">Property Owner</option>
+                                            <option value="any">Any</option>
+                                        </select>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                        <button class="btn btn-inverse btn-block" type="submit"><i class="icofont icofont-home-search"></i> SEARCH PROPERTY</button>
+                                        <p style="color: red" th:text="${msg}" th:if="@{not #strings.isEmpty(msg)}"></p>
+                                    </div>
+                                </form>
+                            </div><!-- end search module -->
+                        </div><!-- end col-lg-4 -->
+                    </div><!-- end row -->
+                </div><!-- end container -->
+            </div><!-- end map -->
+        </section><!-- clearfix -->
+
+
+
+
+
+
+        <script src="js/jquery-1.10.2.min.js" th:src="@{/js/jquery-1.10.2.min.js}"></script>
+        <script src="js/jquery-migrate-1.2.1.min.js" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+        <script src="js/bootstrap.js" th:src="@{/js/bootstrap.js}"></script>
+        <script src="js/jquery.parallax.js" th:src="@{/js/jquery.parallax.js}"></script>
+        <script src="js/jquery.fitvids.js" th:src="@{/js/jquery.fitvids.js}"></script>
+        <script src="js/jquery.unveilEffects.js" th:src="@{/js/jquery.unveilEffects.js}"></script>
+        <script src="js/bootstrap-select.js" th:src="@{/js/bootstrap-select.js}"></script>
+        <script src="js/jquery.fancybox.pack.js" th:src="@{/js/jquery.fancybox.pack.js}"></script>
+        <script src="js/nicescroll.js" th:src="@{/js/nicescroll.js}"></script>
+        <script src="js/main.js" th:src="@{/js/main.js}"></script>
+
+        <!-- Googgle map 
+        ================================================== -->
+
+        <!---<script src="https://maps.googleapis.com/maps/api/js"></script>--->
+        <script src="js/infobox.js" th:src="@{/js/infobox.js}"></script><!-- Parallax -->
+        <script src="js/data.json" th:src="@{/js/data.json}"></script>
+        <script src="js/markerclusterer.js" th:src="@{/js/markerclusterer.js}"></script>
+        <script src="js/markers-map.js" th:src="@{/js/markers-map.js}"></script>
+
+        <script>
+            google.maps.event.addDomListener(window, 'load', speedTest.init);
+        </script>
+
+    </body>
+</html>

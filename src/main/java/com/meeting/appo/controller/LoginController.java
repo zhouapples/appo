@@ -1,15 +1,17 @@
 package com.meeting.appo.controller;
 
+import com.meeting.appo.dao.EventRoomDao;
 import com.meeting.appo.dao.EventStatusDao;
 import com.meeting.appo.dao.EventUserDao;
 import com.meeting.appo.entities.User;
-import com.meeting.appo.utils.WebUtils;
-import org.apache.ibatis.session.SqlSession;
+
+import com.meeting.appo.utils.Chinese2PinyinUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.support.SessionStatus;
 
 
@@ -21,6 +23,12 @@ import java.util.Map;
 
 @Controller
 public class LoginController {
+    @Autowired
+    EventStatusDao statusDao;
+    @Autowired
+    EventUserDao userDao;
+    @Autowired
+    EventRoomDao roomDao;
 
     @GetMapping("/index")
     public String index(){
@@ -36,62 +44,35 @@ public class LoginController {
 
     @PostMapping("/login")
     public String login(HttpServletRequest request, HttpSession session, Model model){
-        String username = request.getParameter("username");
+        String pinyin_name = request.getParameter("pinyin_name");
         String pwd = request.getParameter("password");
 
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        Map userMap = null;
-        try {
-            userMap = mapper.getUserByUsername(username);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }finally {
-            sqlSession.close();
-        }
-        System.out.println(userMap);
+        User user = statusDao.getUserByUsername(pinyin_name);
 
-        if (userMap !=null && pwd.equals(userMap.get("mobile"))){
+        System.out.println(user);
+
+        if (user !=null && pwd.equals(user.getMobile())){   //依然是把手机号码当做密码来认证
             Object value = session.getAttribute("loginUser");
             if(value==null){
 
                 Map<String,Object> map = new HashMap<String,Object>();
-                map.put("uid",userMap.get("uid"));
-                map.put("username",username);
-                map.put("mobile",userMap.get("mobile"));
-                map.put("dept",userMap.get("dept_name"));
-                map.put("isAdmin",userMap.get("isAdmin"));
+                map.put("uid",user.getUid());
+                map.put("username",user.getUsername());
+                map.put("mobile",user.getMobile());
+                map.put("dept",user.getDept().getDept_name());
+                map.put("isAdmin",user.isAdmin());
                 session.setAttribute("loginUser",map);
             }
-            model.addAttribute("username",username);
+            model.addAttribute("username",user.getUsername());
             model.addAttribute("password",pwd);
             return "redirect:/index";
         }else{
             model.addAttribute("errMsg","用户名或者密码错误");
             return "login";
         }
-
-
     }
 
 
-    @GetMapping("/searchResult")
-    public String searchResult(@RequestParam("name") String name,
-                               @RequestParam("age") String age,
-                               @RequestParam("gender") String gender,
-                               Map<String,Object> map,HttpSession session){
-        if (session.getAttribute("loginUser")==null){
-            System.out.println("[name:"+name+" age:"+age+" gender:"+gender+"]");
-            map.put("msg","请先登录");
-            return "index";
-        }else{
-            map.put("msg","欢迎回来");
-            System.out.println("正常查询");
-            return "index";
-        }
-
-
-    }
 
     @PostMapping("/regist")
     public String regist(HttpServletRequest request,HttpSession session,Model model){
@@ -116,22 +97,20 @@ public class LoginController {
             return "login";
         }else{
             //校验通过
-            User user = new User(username,mobile,dept,new Date(),admin);
-            SqlSession sqlSession = WebUtils.getSqlSession();
-            EventUserDao mapper = sqlSession.getMapper(EventUserDao.class);
-            mapper.addUser(user);
-            sqlSession.commit();
+            String pinyin_name = Chinese2PinyinUtils.toPinyin(username);
+            User user = new User(username,mobile,dept,new Date(),admin,pinyin_name);
+
+            userDao.addUser(user);
+
             //注册完自动登陆
-            EventStatusDao mapper1 = sqlSession.getMapper(EventStatusDao.class);
-            Map userMap = mapper1.getUserByUsername(username);
+            User userReg = statusDao.getUserByUsername(username);
             Map<String,Object> map = new HashMap<String,Object>();
-            map.put("uid",userMap.get("uid"));
+            map.put("uid",userReg.getUid());
             map.put("username",username);
-            map.put("mobile",userMap.get("mobile"));
-            map.put("dept",userMap.get("dept"));
-            map.put("isAdmin",userMap.get("isAdmin"));
+            map.put("mobile",userReg.getMobile());
+            map.put("dept",userReg.getDept().getDept_name());
+            map.put("isAdmin",userReg.isAdmin());
             session.setAttribute("loginUser",map);
-            sqlSession.close();
             return "redirect:/index";
         }
     }

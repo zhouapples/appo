@@ -4,17 +4,20 @@ import com.meeting.appo.entities.Dept;
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
 import com.meeting.appo.entities.User;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.Nullable;
 
 import java.util.List;
 import java.util.Map;
 
+
+@Mapper
 public interface EventStatusDao {
     //other
     List<Status> getStatusList(String day, @Nullable String rid);
     List<Room> getRooms();
-    Map getUserByUsername(String username);
+    User getUserByUsername(String username);
     String getAdminByUserId(Integer id);
     List<Status> getStatusByUser(int uid,@Nullable Long start_timestamp);
 
@@ -22,7 +25,7 @@ public interface EventStatusDao {
     void addStatus(@Param("status") Status status);
 
     //改单
-    void modStatus(Integer sid);
+    void modStatus(@Param("status") Status status);
 
     //删单
     void rmStatusById(Integer sid);

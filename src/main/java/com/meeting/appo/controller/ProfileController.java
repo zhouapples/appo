@@ -8,14 +8,14 @@ import com.meeting.appo.entities.Dept;
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
 import com.meeting.appo.entities.User;
-import com.meeting.appo.utils.WebUtils;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+import com.meeting.appo.utils.Chinese2PinyinUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,24 +28,28 @@ import java.util.*;
 
 @Controller
 public class ProfileController {
+    @Autowired
+    EventStatusDao statusDao;
+    @Autowired
+    EventUserDao userDao;
+    @Autowired
+    EventRoomDao roomDao;
+
 
     @GetMapping("/profile")
     public String toUserProfile(HttpSession session,Model model){
         Map user = (Map)session.getAttribute("loginUser");
         int uid = (int) user.get("uid");
-        SqlSession sqlSession = WebUtils.getSqlSession();
+
 
         //构造查询起始时间,当前时间前推一个月
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        calendar.add(Calendar.MONTH,-1);    //前推1个月
+        calendar.add(Calendar.MONTH,-1);    //前推1个月,显示最近30天本人的预约记录
         Date m = calendar.getTime();
         Long start_timestamp = (long)(int)(m.getTime()/1000);
         System.out.println(start_timestamp);
-
-        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        List<Status> statusList = mapper.getStatusByUser(uid,start_timestamp);
-        sqlSession.close();
+        List<Status> statusList = statusDao.getStatusByUser(uid,start_timestamp);
         model.addAttribute("statusList",statusList);
         return "profile";
     }
@@ -55,31 +59,30 @@ public class ProfileController {
                              HttpSession session,
                              SessionStatus sessionStatus,
                              Model model){
-        String username = request.getParameter("username");
+        String username = request.getParameter("new_username");
+        String old_password = request.getParameter("old_password");
+        String new_password = request.getParameter("new_password");
         String mobile = request.getParameter("mobile");
         String dept = request.getParameter("dept");
         int uid = Integer.parseInt(request.getParameter("uid"));
+        boolean isAdmin = request.getParameter("admin").equals("1");
 
         //输入数据校验
-        if(username.equals("") || mobile.equals("") || dept.equals("")){
+        if(username.equals("") || mobile.equals("") || dept.equals("") || old_password.equals("") ||new_password.equals("")){
             model.addAttribute("errMsg","信息不完整,用户名和部门用文字或字母,号码用数字");
             return "redirect:/profile";
-        }else if(mobile.length() != 11){
-            model.addAttribute("errMsg","手机号码长度有误");
+        }else if(mobile.length() != 11) {
+            model.addAttribute("errMsg", "手机号码长度有误");
+            return "redirect:/profile";
+        }
+        else if (userDao.getUserById(uid).getPassword().equals(old_password)){
+            model.addAttribute("errMsg", "原密码有误");
             return "redirect:/profile";
         }else{
             //校验通过
-            SqlSession sqlSession = WebUtils.getSqlSession();
-            EventUserDao mapper = sqlSession.getMapper(EventUserDao.class);
-            Map<String,Object> infoMap = new HashMap<String, Object>();
-            infoMap.put("uid",uid);
-            infoMap.put("username",username);
-            infoMap.put("mobile",mobile);
-            infoMap.put("dept",dept);
-            mapper.modUser(infoMap);
-            sqlSession.commit();
-            sqlSession.close();
-
+            String pinyin_name = Chinese2PinyinUtils.toPinyin(username);
+            User user = new User(uid,username,new_password,mobile,dept,isAdmin,pinyin_name);
+            userDao.modUser(user);
 
             //清除session信息并跳转到登陆页面
             session.invalidate();
@@ -95,12 +98,10 @@ public class ProfileController {
         Map loginUser = (Map)session.getAttribute("loginUser");
         boolean isAdmin = (boolean)loginUser.get("isAdmin");
         if (isAdmin){
-            SqlSession sqlSession = WebUtils.getSqlSession();
-            EventStatusDao mapperDept = sqlSession.getMapper(EventStatusDao.class);
-            EventRoomDao mapperRoom = sqlSession.getMapper(EventRoomDao.class);
-            List<Dept> deptList = mapperDept.getAllDept();
-            List<Room> roomList = mapperRoom.queryAllRooms();
-            sqlSession.close();
+
+            List<Dept> deptList = statusDao.getAllDept();
+            List<Room> roomList = roomDao.queryAllRooms();
+
             model.addAttribute("deptList",deptList);
             model.addAttribute("roomList",roomList);
 
@@ -111,13 +112,10 @@ public class ProfileController {
 
     @PostMapping("/profile/updateRoom")
     public String updateRoom(){
-
         return "rs_manage";
     }
-
     @PostMapping("/profile/updateStatus")
     public String updateStatus(){
-
         return "rs_manage";
     }
 
@@ -138,7 +136,6 @@ public class ProfileController {
         SimpleDateFormat sdfm = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date endDate = null, startDate = null;
         Map<String,Object> statusMap = new HashMap<String,Object>();
-        SqlSession sqlSession = WebUtils.getSqlSession();
         Status conflict = null;
 
         try {
@@ -157,43 +154,24 @@ public class ProfileController {
 
             Status state = new Status(new Date(),startDate,endDate,rid,participants,meetingTheme,uid,status);
 
-            EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-
             //查找在目标日期内,该目标房间的所有预约记录
-            List<Status> todayStatusList = mapper.getStatusList(new SimpleDateFormat("yyyy-MM-dd").format(startDate),rid+"");
+            List<Status> todayStatusList = statusDao.getStatusList(new SimpleDateFormat("yyyy-MM-dd").format(startDate),rid+"");
 
             //判断预约时间上的冲突
-//            for (Status s:todayStatusList){
-//                if ((s.getStart_date().getTime()<startDate.getTime() && endDate.getTime()<s.getEnd_date().getTime()) ||
-//                        (s.getStart_date().getTime()>startDate.getTime() && endDate.getTime()>s.getStart_date().getTime()) ||
-//                        (s.getStart_date().getTime()<startDate.getTime() && startDate.getTime()<s.getEnd_date().getTime()) ||
-//                        (startDate.getTime()==s.getStart_date().getTime() && startDate.getTime()==s.getEnd_date().getTime()) ||
-//                        (startDate.getTime()<s.getStart_date().getTime() && endDate.getTime()<s.getEnd_date().getTime())
-//                ){
-//                    conflict = s;
-//                    throw new ParseException(s.toString(),1);
-//
-//                }
-
-
                 for (Status s:todayStatusList){
                     if (!(startDate.getTime() < s.getStart_date().getTime() && endDate.getTime() < s.getStart_date().getTime()) &&
                             !(startDate.getTime() > s.getEnd_date().getTime())
                     ){
                         conflict = s;
                         throw new ParseException(s.toString(),1);
-
                     }
                 }
 
-            mapper.addStatus(state);
-            sqlSession.commit();
-            sqlSession.close();
+            statusDao.addStatus(state);
             statusMap.put("code",200);
             statusMap.put("msg","命令成功完成");
         } catch (ParseException e) {
             e.printStackTrace();
-            sqlSession.close();
             statusMap.put("code",403);
             statusMap.put("user",conflict.getUser().getUsername());
             statusMap.put("mobile",conflict.getUser().getMobile());
@@ -226,18 +204,15 @@ public class ProfileController {
             request.getRequestDispatcher("/rs_manage").forward(request,response);
         }
         //校验通过
-        User user = new User(username,mobile,deptMap.get(dept),new Date(),admin);
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventUserDao mapper = sqlSession.getMapper(EventUserDao.class);
-        mapper.addUser(user);
-        sqlSession.commit();
-        sqlSession.close();
+        String pinyin_name = Chinese2PinyinUtils.toPinyin(username);
+        User user = new User(username,mobile,deptMap.get(dept),new Date(),admin,pinyin_name);
+        userDao.addUser(user);
+
         request.getRequestDispatcher("/rs_manage").forward(request,response);
         Map<String,Object> respMap = new HashMap<String,Object>();
         respMap.put("code",200);
         respMap.put("success",true);
         return new ObjectMapper().writeValueAsString(respMap);
-
     }
 
 
@@ -249,13 +224,10 @@ public class ProfileController {
         boolean available = !request.getParameter("isAvailable").equals("");
         String comm = (String)request.getParameter("comm");
 
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventRoomDao mapper = sqlSession.getMapper(EventRoomDao.class);
         Room room = new Room(flood,serial,seats,available,comm,new Date());
-        mapper.addRoom(room);
+        roomDao.addRoom(room);
         System.out.println(room.toString());
-        sqlSession.commit();
-        sqlSession.close();
+
     }
 
 
@@ -273,7 +245,6 @@ public class ProfileController {
         }
 
 
-
         int before_level_id=0;
         String bli = request.getParameter("before_level_id");
         if (!bli.equals("")){
@@ -283,11 +254,8 @@ public class ProfileController {
         String comment = request.getParameter("comment");
 
         Dept dept = new Dept(dept_name,before_level_id,after_level_id,comment,is_first_level);
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventUserDao mapper = sqlSession.getMapper(EventUserDao.class);
-        mapper.addDept(dept);
-        sqlSession.commit();
-        sqlSession.close();
+
+        userDao.addDept(dept);
 
         HashMap<String, String> map = new HashMap<>();
         map.put("msg","ok");
@@ -295,13 +263,9 @@ public class ProfileController {
     }
 
 
-
     @GetMapping("/test")
     public String chooseTemp(){
-        return "rs_manage";
+        return "admin";
     }
-
-
-
 
 }

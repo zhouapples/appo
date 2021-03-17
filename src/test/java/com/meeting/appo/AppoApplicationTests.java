@@ -1,12 +1,15 @@
 package com.meeting.appo;
 
+import com.meeting.appo.dao.EventRoomDao;
 import com.meeting.appo.dao.EventStatusDao;
 import com.meeting.appo.dao.EventUserDao;
 import com.meeting.appo.entities.Status;
-import com.meeting.appo.utils.WebUtils;
+
+import com.meeting.appo.entities.User;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
+
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.EventListener;
@@ -17,71 +20,66 @@ import java.util.Map;
 @SpringBootTest
 class AppoApplicationTests {
 
+    @Autowired
+    EventStatusDao statusDao;
+    @Autowired
+    EventUserDao userDao;
+    @Autowired
+    EventRoomDao roomDao;
+
     @Test
     void contextLoads() {
     }
 
     @Test
     public void getStatusList(){
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        List<Status> statusList = mapper.getStatusList("2021-03-10",null);
+
+        List<Status> statusList = statusDao.getStatusList("2021-03-10",null);
         for (Status s:statusList){
             System.out.println(s);
         }
-        sqlSession.close();
     }
 
     @Test
     public void getAdminByUserId(){
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        String admin = mapper.getAdminByUserId(3);
+
+        String admin = statusDao.getAdminByUserId(3);
         System.out.println(admin);
-        sqlSession.close();
+
     }
 
 
     @Test
     public void getUserByUsername(){
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        Map map = mapper.getUserByUsername("欧巴");
-        System.out.println(map);
-        sqlSession.close();
+
+
     }
 
     @Test
     public void modUser(){
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventUserDao userDao = sqlSession.getMapper(EventUserDao.class);
-        Map<String,Object> infoMap = new HashMap<String, Object>();
-        infoMap.put("username","欧巴桑");
-        infoMap.put("uid",4);
-        infoMap.put("dept","惊呆部");
-        infoMap.put("mobile","13188339541");
-        userDao.modUser(infoMap);
-        sqlSession.close();
+        User user = new User();
+        user.setUsername("欧巴桑");
+        user.setUid(4);
+        user.setMobile("13188339541");
+        userDao.modUser(user);
+
     }
 
     @Test
     public void getStatusByUser(){
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        List<Status> statusList = mapper.getStatusByUser(1,null);
+
+        List<Status> statusList = statusDao.getStatusByUser(1,null);
         for (Status s:statusList){
             System.out.println(s);
         }
-        sqlSession.close();
+
     }
 
     @Test
     public void getStatusBySid(){
-        SqlSession sqlSession = WebUtils.getSqlSession();
-        EventStatusDao mapper = sqlSession.getMapper(EventStatusDao.class);
-        Status s = mapper.getStatusBySid(1);
+        Status s = statusDao.getStatusBySid(1);
         System.out.println(s);
-        sqlSession.close();
+
     }
 
 

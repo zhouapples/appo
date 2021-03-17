@@ -6,29 +6,70 @@ public class User {
     private Integer uid;
     private String username;
     private String mobile;
-    private String dept;
+    private String deptId;
     private Date create_date;
     private boolean Admin=false;
+    private String password;
+    private String pinyin_name;
+    private Dept dept;
 
     public User() {
     }
 
-    public User(Integer uid, String username, String mobile, String dept, Date create_date, boolean admin) {
+    public User(Integer uid, String username, String password,String mobile, String deptId, Date create_date, boolean admin) {
         this.uid = uid;
         this.username = username;
         this.mobile = mobile;
-        this.dept = dept;
+        this.deptId = deptId;
         this.create_date = create_date;
         this.Admin = admin;
+        this.password = password;
     }
 
-    public User(String username, String mobile, String dept, Date create_date, boolean admin) {
+    public User(String username, String mobile, String deptId, Date create_date, boolean admin,String pinyin_name) {
         this.uid = null;
         this.username = username;
         this.mobile = mobile;
-        this.dept = dept;
+        this.deptId = deptId;
         this.create_date = create_date;
         this.Admin = admin;
+        this.pinyin_name = pinyin_name;
+    }
+
+    //更新用户信息用
+    public User(int uid ,String username, String password,String mobile, String deptId, boolean admin,String pinyin_name) {
+        this.uid = uid;
+        this.username = username;
+        this.mobile = mobile;
+        this.deptId = deptId;
+        this.Admin = admin;
+        this.password = password;
+        this.pinyin_name = pinyin_name;
+    }
+
+
+    public String getPinyin_name() {
+        return pinyin_name;
+    }
+
+    public void setPinyin_name(String pinyin_name) {
+        this.pinyin_name = pinyin_name;
+    }
+
+    public Dept getDept() {
+        return dept;
+    }
+
+    public void setDept(Dept dept) {
+        this.dept = dept;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Integer getUid() {
@@ -55,12 +96,12 @@ public class User {
         this.mobile = mobile;
     }
 
-    public String getDept() {
-        return dept;
+    public String getDeptId() {
+        return deptId;
     }
 
-    public void setDept(String dept) {
-        this.dept = dept;
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
     }
 
     public Date getCreate_date() {
@@ -85,9 +126,11 @@ public class User {
                 "uid=" + uid +
                 ", username='" + username + '\'' +
                 ", mobile='" + mobile + '\'' +
-                ", dept='" + dept + '\'' +
+                ", deptId='" + deptId + '\'' +
                 ", create_date=" + create_date +
                 ", Admin=" + Admin +
+                ", password='" + password + '\'' +
+                ", pinyin_name='" + pinyin_name + '\'' +
                 '}';
     }
 }
