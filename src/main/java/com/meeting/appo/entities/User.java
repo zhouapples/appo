@@ -6,17 +6,18 @@ public class User {
     private Integer uid;
     private String username;
     private String mobile;
-    private String deptId;
+    private int deptId;
     private Date create_date;
-    private boolean Admin=false;
+    private boolean Admin;
     private String password;
     private String pinyin_name;
     private Dept dept;
+    private boolean available;
 
     public User() {
     }
 
-    public User(Integer uid, String username, String password,String mobile, String deptId, Date create_date, boolean admin) {
+    public User(Integer uid, String username, String password,String mobile, int deptId, Date create_date, boolean admin) {
         this.uid = uid;
         this.username = username;
         this.mobile = mobile;
@@ -26,8 +27,9 @@ public class User {
         this.password = password;
     }
 
-    public User(String username, String mobile, String deptId, Date create_date, boolean admin,String pinyin_name) {
+    public User(String username, String password,String mobile, int deptId, Date create_date, boolean admin,String pinyin_name) {
         this.uid = null;
+        this.password = password;
         this.username = username;
         this.mobile = mobile;
         this.deptId = deptId;
@@ -37,7 +39,7 @@ public class User {
     }
 
     //更新用户信息用
-    public User(int uid ,String username, String password,String mobile, String deptId, boolean admin,String pinyin_name) {
+    public User(int uid ,String username, String password,String mobile, int deptId, boolean admin,String pinyin_name) {
         this.uid = uid;
         this.username = username;
         this.mobile = mobile;
@@ -47,6 +49,14 @@ public class User {
         this.pinyin_name = pinyin_name;
     }
 
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
+    }
 
     public String getPinyin_name() {
         return pinyin_name;
@@ -96,11 +106,11 @@ public class User {
         this.mobile = mobile;
     }
 
-    public String getDeptId() {
+    public int getDeptId() {
         return deptId;
     }
 
-    public void setDeptId(String deptId) {
+    public void setDeptId(int deptId) {
         this.deptId = deptId;
     }
 

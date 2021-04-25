@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+</head>
+  
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside th:insert="admin::left_bar"></aside>
+    <!--End 左侧导航-->
+    
+    <!--头部信息-->
+    <header class="lyear-layout-header">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title"> 部门管理 </span>
+          </div>
+          
+          <ul th:insert="admin::profile_bar"></ul>
+          
+        </div>
+      </nav>
+      
+    </header>
+    <!--End 头部信息-->
+    
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+
+              <div class="card-body">
+                
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>编号</th>
+                        <th>部门名称</th>
+                        <th>一级部门</th>
+                        <th>上级</th>
+                        <th>下级</th>
+                        <th>备注</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="dept,idx:${deptList}" class="each_dept">
+                        <td th:text="${idx.index}+1">1</td>
+                        <td th:text="${dept.dept_name}">第01章 天涯思君不可忘</td>
+                        <td th:if="${dept.before_level_id eq 0}" name="1" th:text="是">第01章 天涯思君不可忘</td>
+                        <td th:if="${dept.before_level_id eq 1}" name="0" th:text="否">第01章 天涯思君不可忘</td>
+                        <td th:text="${dept.before_level_id}">第01章 天涯思君不可忘</td>
+                        <td th:text="${dept.after_level_id}">第01章 天涯思君不可忘</td>
+                        <td th:text="${dept.comment}">第01章 天涯思君不可忘</td>
+                        <td class="operation">
+<!--                      <div class="btn-group">-->
+                            <a id="edit_dept" class="btn btn-xs btn-default"  title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil">编辑</i></a>
+                            <a id="delete_dept" class="btn btn-xs btn-default"  title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close">删除</i></a>
+<!--                          </div>-->
+                        </td>
+                        <input type="hidden" th:value="${dept.did}" />
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <hr>
+
+
+
+
+
+
+                  <form action="/profile/addDept" class="boxes" method="post" style="padding: 20px 10px;" id="addDept">
+
+                      <!-- End .single_form -->
+                      <div class="form-group">
+                          <label for="dept_name">部门名称</label>
+                          <input class="form-control" id="dept_name"  name="dept_name"  type="text">
+                      </div>
+
+                      <div class="form-group">
+                          <label for="is_first_level">是否一级部门</label>
+                          <select class="form-control" id="is_first_level" name="is_first_level">
+                              <option  value="1">是</option>
+                              <option selected value="0">否</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="before_level_id">上级部门</label>
+                          <input class="form-control" id="before_level_id"  name="before_level_id" placeholder="非必须">
+                      </div>
+                      <!-- End .single_form -->
+                      <div class="form-group">
+                          <label for="after_level_id">下级部门</label>
+                          <input class="form-control" id="after_level_id"  name="after_level_id"  type="text" placeholder="非必须">
+                      </div>
+
+                      <div class="form-group">
+                          <label for="comment">备注</label>
+                          <input class="form-control" id="comment"  name="comment"  type="text">
+                      </div>
+
+
+                      <input type="hidden" name="rid" id="d_id"/>
+
+                      <!-- End .single_form -->
+                      <input class="btn btn-primary search width-100-100 subBtnDept"  type="button" value="添加"/>
+                  </form>
+
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('.search-bar .dropdown-menu a').click(function() {
+        var field = $(this).data('field') || '';
+        $('#search-field').val(field);
+        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+    });
+
+    // $(".page").click(function () {
+    //   startPage = $(this).text();
+    //   alert(startPage);
+    // })
+
+
+});
+
+</script>
+
+
+<script>
+  $(".each_dept").children(".operation").children("#edit_dept").click(function () {
+      $("#dept_name").val($(this).parent().parent().find("td").eq(1).text());
+      $("#is_first_level").val($(this).parent().parent().find("td").eq(2).attr("name"));
+      $("#before_level_id").val($(this).parent().parent().find("td").eq(3).text());
+      $("#after_level_id").val($(this).parent().parent().find("td").eq(4).text());
+      $("#comment").val($(this).parent().parent().find("td").eq(5).text());
+      $("#d_id").val($(this).parent().parent().find("input").val());
+
+      iflevel = $("#is_first_level option:selected").val();
+      if (iflevel==1){
+          $("#before_level_id").attr("disabled",true);
+      }else {
+          $("#before_level_id").attr("disabled",false);
+      }
+
+
+      $("#addDept").attr({"action":"/setDeptState","method":"put"});
+      $(".subBtnDept").val("更新");
+
+
+  });
+
+
+  $(".each_dept").children(".operation").children("#delete_dept").click(function () {
+    did = $(this).parent().parent().find("input").val();
+    $.ajax({
+      url:"/deleteDept",
+      type: "DELETE",
+      data:{"did":did},
+      dataType: "json",
+      success:function (result) {
+        alert("删除成功");
+          window.location.reload();
+      }
+    })
+  });
+
+</script>
+
+
+<script>
+    $("#is_first_level").change(function () {
+        iflevel = $("#is_first_level option:selected").val();
+        if (iflevel==1){
+            $("#before_level_id").attr("disabled",true);
+        }else {
+            $("#before_level_id").attr("disabled",false);
+        }
+    });
+
+    $(".subBtnDept").click(function () {
+        if ($(this).val() == "添加") {
+            dataD = {
+                "dept_name": $("#dept_name").val(),
+                "is_first_level": $("#is_first_level").val(),
+                "after_level_id": $("#after_level_id").val(),
+                "comment": $("#comment").val(),
+                "before_level_id": $("#before_level_id").val()
+            };
+
+            $.ajax({
+                url: $(this).parent().attr("action"),
+                type: 'POST',
+                data: dataD,
+                dataType: "json",
+                success: function (result) {
+                    alert(result.toString());
+                    window.location.reload();
+                }
+            })
+        }else{
+            dataD = {
+                "did" :$("#d_id").val(),
+                "dept_name": $("#dept_name").val(),
+                "is_first_level": $("#is_first_level").val(),
+                "after_level_id": $("#after_level_id").val(),
+                "comment": $("#comment").val(),
+                "before_level_id": $("#before_level_id").val()
+            };
+
+            $.ajax({
+                url: $(this).parent().attr("action"),
+                type: 'PUT',
+                data: dataD,
+                success: function (result) {
+                    alert("修改成功");
+                    window.location.reload();
+                }
+            })
+        }
+    })
+
+
+</script>
+
+
+</body>
+</html>

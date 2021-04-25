@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+</head>
+  
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside th:insert="admin::left_bar"></aside>
+    <!--End 左侧导航-->
+    
+    <!--头部信息-->
+    <header class="lyear-layout-header">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title"> 预约管理 </span>
+          </div>
+          
+          <ul th:insert="admin::profile_bar"></ul>
+          
+        </div>
+      </nav>
+      
+    </header>
+    <!--End 头部信息-->
+    
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+
+              <div class="card-body">
+                
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>
+                          <label class="lyear-checkbox checkbox-primary">
+                            <input type="checkbox" id="check-all"><span></span>
+                          </label>
+                        </th>
+                        <th>主题</th>
+                        <th>开始</th>
+                        <th>结束</th>
+                        <th>联系人</th>
+                        <th>地点</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="item,idx:${statusList}" class="each_status">
+                        <td id="status_id" th:text="${item.sid}">1</td>
+                        <td th:text="${item.meeting_theme}">第01章 天涯思君不可忘</td>
+                        <td th:text="${#dates.format(item.start_date, 'yyyy-MM-dd HH:mm')}">《倚天屠龙记》</td>
+                        <td th:text="${#dates.format(item.end_date, 'yyyy-MM-dd HH:mm')}">《倚天屠龙记》</td>
+                        <td th:if="${item.user != null}" th:text="${item.user.username}">金庸</td>
+                        <td th:if="${item.user == null}">未知</td>
+                        <td th:if="${item.room != null}" th:text="${item.room.rserial}">36</td>
+                        <td th:if="${item.status eq true}"><font class="text-success">已预约</font></td>
+                        <td th:if="${item.status eq false}"><font class="text-success">已取消</font></td>
+                        <td class="operation">
+<!--                          <div class="btn-group">-->
+                            <a id="disable_status" class="btn btn-xs btn-default"  title="禁用" data-toggle="tooltip"><i class="mdi mdi-pencil">禁用</i></a>
+                            <a id="standby_status" class="btn btn-xs btn-default"  title="启用" data-toggle="tooltip"><i class="mdi mdi-pencil">启用</i></a>
+                            <a id="delete_status" class="btn btn-xs btn-default"  title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close">删除</i></a>
+<!--                          </div>-->
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <ul class="pagination">
+
+                    <li class="page">
+                      <form action="/status_manager" method="post">
+                        <input type="text" name=pageNum th:placeholder="${1}+'-'+${pageNum}">
+                        <input type="submit" value="跳转"/>
+                      </form>
+
+                    </li>
+
+                </ul>
+       
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('.search-bar .dropdown-menu a').click(function() {
+        var field = $(this).data('field') || '';
+        $('#search-field').val(field);
+        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+    });
+
+    // $(".page").click(function () {
+    //   startPage = $(this).text();
+    //   alert(startPage);
+    // })
+
+
+});
+
+</script>
+
+
+<script>
+  $(".each_status").children(".operation").children("#disable_status").click(function () {
+      sid = $(this).parent().parent().children("#status_id").text();
+      $.ajax({
+        url:"/setStatus",
+        type: "PUT",
+        data:{"sid":sid,"state":0},
+        success:function (data) {
+        alert("取消成功");
+            window.location.reload();
+        }
+      })
+  });
+
+  $(".each_status").children(".operation").children("#standby_status").click(function () {
+    sid = $(this).parent().parent().children("#status_id").text();
+    $.ajax({
+      url:"/setStatus",
+      type: "PUT",
+      data:{"sid":sid,"state":1},
+      success:function (data) {
+        alert("启用成功");
+          window.location.reload();
+      }
+    })
+  });
+
+  $(".each_status").children(".operation").children("#delete_status").click(function () {
+    sid = $(this).parent().parent().children("#status_id").text();
+    $.ajax({
+      url:"/profile",
+      type: "DELETE",
+      data:{"sid":sid},
+      success:function () {
+        alert("删除成功");
+          window.location.reload();
+      }
+    })
+  });
+
+</script>
+
+
+</body>
+</html>

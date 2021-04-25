@@ -4,6 +4,7 @@ import com.meeting.appo.entities.Dept;
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
 import com.meeting.appo.entities.User;
+import org.apache.ibatis.annotations.MapKey;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.lang.Nullable;
@@ -31,13 +32,21 @@ public interface EventStatusDao {
     void rmStatusById(Integer sid);
 
     //查全
-    List<Status> queryAllStatus();
+    List<Status> adminStatusList(int start,int end);
 
     //通过id查
     Status getStatusBySid(Integer sid);
 
     //查全部部门
     List<Dept> getAllDept();
+
+    int getStatusCount(@Nullable String today);
+
+    void setStatusState(int sid,boolean state);
+
+    @MapKey("dateStr")
+    Map<String,Object> showHistogram();
+
 
 
 

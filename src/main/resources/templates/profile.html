@@ -62,7 +62,7 @@
                                 </li>
                             </ul><!-- /.nav-style-primary -->
                             <div th:if="${session.loginUser.isAdmin eq true}">
-                                <a class="btn btn-primary" href="/rs_manage">去管理页面</a>
+                                <a class="btn btn-primary" href="/admin">去管理页面</a>
                             </div>
                         </div>
                         <!-- agent details -->
@@ -162,15 +162,18 @@
                                 </tr>
 
                                 <tr th:each="sl,index:${statusList}" class="status_item">
+                                    <input id="sid" th:value="${sl.sid}" type="hidden"/>
                                     <th th:text="${#dates.format(sl.create_date, 'yyyy-MM-dd HH:mm:ss')}"></th>
                                     <th th:text="${#dates.format(sl.start_date, 'yyyy-MM-dd 【HH:mm】')}+' --> '+${#dates.format(sl.end_date, 'yyyy-MM-dd 【HH:mm】')}">9:30-10:15
                                     </th>
                                     <th th:text="${sl.room.rserial}">语文</th>
                                     <th th:text="${sl.meeting_theme}">语文</th>
-                                    <th th:if="${sl.status eq true }" th:text="已预约">语文</th>
-                                    <th th:if="${sl.status eq false }" th:text="已取消">语文</th>
+                                    <th th:if="${sl.status eq true }" th:name="${sl.status}">已预约</th>
+                                    <th th:if="${sl.status eq false }" th:name="${sl.status}">已取消</th>
                                     <th>
-                                        <input th:href="@{/profile(sid=${sl.sid})}" value="删除" class="deleteStatus" type="button" style="width: 100%;">
+                                        <button th:href="@{/profile(sid=${sl.sid})}" class="btn btn-w-md btn-round btn-secondary deleteStatus" style="width: 40%;">删除</button>
+                                        <button th:href="@{/profile(sid=${sl.sid})}" th:if="${sl.status eq true }" class="btn btn-w-md btn-round btn-secondary cancelStatus" style="width: 40%;">已启用</button>
+                                        <button th:href="@{/profile(sid=${sl.sid})}" th:if="${sl.status eq false }" class="btn btn-w-md btn-round btn-secondary cancelStatus" style="width: 40%;">已禁用</button>
                                     </th>
                                 </tr>
 
@@ -195,22 +198,44 @@
         <script src="js/jquery.fancybox.pack.js"></script>
         <script src="js/nicescroll.js"></script>
         <script src="js/main.js"></script>
+
+
+
         <script>
-            $(document).ready(function () {
-                $(".deleteStatus").click(function () {
-                    $.ajax({
-                        url: $(this).attr("href"),
-                        type: 'DELETE',
-                        success: function(result) {
-                            if (result){
-                                alert($(this).parent().parent().attr("class"));
-                                $(this).parent().parent().remove();
-                                alert("删除成功");
-                            }
-                        }
-                    });
-                })
+            $(".cancelStatus").click(function () {
+                // alert($(this).parent().parent().attr("class"));
+                state = $(this).parent().parent().find("th").eq(4).attr("name")=="true"?0:1;
+                sid = $(this).parent().parent().find("input").val();
+                $.ajax({
+                    url: "/setStatus",
+                    type: 'PUT',
+                    dataType:"json",
+                    data:{"sid":sid,"state":state},
+                    success: function(result) {
+                        alert(result.res);
+                        window.location.reload()
+                    }
+                });
+
             });
+
+
+            $(".deleteStatus").click(function () {
+                // alert($(this).parent().parent().attr("class"));
+                $.ajax({
+                    url: $(this).attr("href"),
+                    type: 'DELETE',
+                    dataType:"json",
+                    success: function(result) {
+                        if (result){
+                            $(this).parent().parent().remove();
+                            alert("删除成功");
+                            window.location.reload();
+                        }
+                    }
+                });
+            });
+
 
         </script>
  

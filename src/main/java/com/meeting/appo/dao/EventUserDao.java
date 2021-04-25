@@ -17,11 +17,31 @@ public interface EventUserDao {
     void rmUser(Integer uid);
 
     void modUser(@Param("user") User user);
+    void modUser(Map<String,Object> userMap);
 
     List<User> queryAllUsers();
 
+    User getUserById(int uid);
+
+    int getUserCount();
+
+    void resetPwd(String pwd,int uid);
+
+
+
+
+
+    //add
     void addDept(@Param("dept") Dept dept);
 
-    User getUserById(int uid);
+    //get-count
+    int getDeptCount();
+
+    //update
+    void modDept(@Param("dept") Dept dept);
+
+    //remove
+    void rmDept(int did);
+
 
 }

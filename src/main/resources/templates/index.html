@@ -33,17 +33,22 @@
 
     </head>
     <body>        
-        <!-- 欢迎信息 -->
-        <a class="btn btn-primary" th:if="${#strings.isEmpty(session.loginUser)}" href="http://localhost:8080/login">登录/注册</a>
+        <a class="btn btn-primary" href="/login" th:if="${#strings.isEmpty(session.loginUser)}">登陆</a>
         <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/profile">我的主页</a>&nbsp;
         <a class="btn btn-primary" th:if="${not #strings.isEmpty(session.loginUser)}" href="/logout">一键登出</a>
 
 
+
+
+
+
+
         <section class="clearfix dm-shadow">
+
             <div class="map">
 
                 <div id="map">
-                    <div align="left" style="font-size: 25px; margin-left:20px;margin-top: 10px" >
+                    <div align="left" style="font-size: 20px; margin-left:20px;margin-top: 40px" id="calendar">
                         <script language="javascript">
                             var my = new Date();
 
@@ -94,14 +99,20 @@
                                         max=29;//这里没有考虑闰月！！
                                     //document.write (max);
                                 }
+
                                 for(k=0;k<6;k++) {
+                                    if (my.getMonth().toString().length<2){
+                                        myMonth = "0"+(my.getMonth()+1);
+                                    }else{
+                                        myMonth = (my.getMonth()+1)+"";
+                                    };
                                     document.write ("<tr>");
                                     for(j=0;j<=6;j++) {
                                         document.write ("<td height='23' width='39'>");
                                         if(j>=(tempday)) {
                                             tempday=0;//设置为最小，相当于取消判断条件
                                             if(theday<=max) {
-                                                document.write ("<a title=" + my.getFullYear() + "-" + (my.getMonth()+1) + "-" +theday + " target='_blank' href=detail?date=" + my.getFullYear() + "-" + (my.getMonth()+1) + "-" +theday + ">");
+                                                document.write ("<a title=" + my.getFullYear() + "-" + (my.getMonth()+1) + "-" +theday + " target='_blank' href=detail?date=" + my.getFullYear() + "-" + myMonth + "-" +theday + ">");
                                                 if(theday==my.getDate())
                                                     document.write ("<font color='green'>【" + theday + "】</font></a>");
                                                 else if(j==0)
@@ -120,81 +131,22 @@
 
                             showc();
                         </script>
+
                     </div>
+
                 </div>
+
+
+
+
+
+
+
+
+
                 <div class="container">
                     <div class="row">
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
-                            <div class="search-section clearfix map-search" data-effect="slide-right">
-                                <form id="advanced_search" action="/searchResult" class="clearfix" name="search" method="get">
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="location">区域 </label>
-                                        <select id="location" class="show-menu-arrow selectpicker" name="name">
-                                            <option value="Yokohama">横滨 </option>
-                                            <option value="Kyoto">东京</option>
-                                            <option value="oosaka">大阪</option>
-                                            <option value="Tokyo City">东京都</option>
-                                            <option value="Nagoya">名古屋</option>
-                                            <option value="nagatu">长津</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="sub-location">Sub Location</label>
-                                        <select id="sub-location" class="show-menu-arrow selectpicker" name="age">
-                                            <option value="Yokohama ">Yokohama </option>
-                                            <option value="Kyoto">Kyoto</option>
-                                            <option value="bodrum">Bodrum</option>
-                                            <option value="Tokyo City">Tokyo City</option>
-                                            <option value="Nagatu">Nagatu</option>
-                                            <option value="ngasaki">ngasaki</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="status">Status</label>
-                                        <select id="status" class="show-menu-arrow selectpicker" name="gender">
-                                            <option value="rent">On Rent</option>
-                                            <option value="sale">On Sale</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="type">Type</label>
-                                        <select id="type" class="show-menu-arrow selectpicker">
-                                            <option value="apertment">Apertment</option>
-                                            <option value="condo">Condo</option>
-                                            <option value="villa">Villa</option>
-                                            <option value="cottage">Cottage</option>
-                                            <option value="house">House</option>
-                                        </select>
-                                    </div>
 
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="min_price">Min Price</label>
-                                        <select id="min_price" class="show-menu-arrow selectpicker">
-                                            <option value="0">$0</option>
-                                            <option value="1000">$1000</option>
-                                            <option value="5000">$5000</option>
-                                            <option value="10000">$10000</option>
-                                            <option value="25000">$25000</option>
-                                            <option value="50000+">$50000+</option>
-                                        </select>
-                                    </div>
-
-                                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                                        <label for="from_the">From the</label>
-                                        <select id="from_the" class="show-menu-arrow selectpicker">
-                                            <option value="agent">Agents</option>
-                                            <option value="property_owner">Property Owner</option>
-                                            <option value="any">Any</option>
-                                        </select>
-                                    </div>
-                                    <div class="clearfix"></div>
-                                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                                        <button class="btn btn-inverse btn-block" type="submit"><i class="icofont icofont-home-search"></i> SEARCH PROPERTY</button>
-                                        <p style="color: red" th:text="${msg}" th:if="@{not #strings.isEmpty(msg)}"></p>
-                                    </div>
-                                </form>
-                            </div><!-- end search module -->
-                        </div><!-- end col-lg-4 -->
                     </div><!-- end row -->
                 </div><!-- end container -->
             </div><!-- end map -->
@@ -216,6 +168,7 @@
         <script src="js/nicescroll.js" th:src="@{/js/nicescroll.js}"></script>
         <script src="js/main.js" th:src="@{/js/main.js}"></script>
 
+
         <!-- Googgle map 
         ================================================== -->
 
@@ -227,6 +180,11 @@
 
         <script>
             google.maps.event.addDomListener(window, 'load', speedTest.init);
+        </script>
+
+        <script>
+
+            $("#calendar").children().css("align","center");
         </script>
 
     </body>

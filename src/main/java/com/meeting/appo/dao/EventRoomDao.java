@@ -16,5 +16,10 @@ public interface EventRoomDao {
 
     void rmRoom(Integer rid);
 
+    int getRoomCount();
+
     List<Room> queryAllRooms();
+    List<Room> queryAllRoomsByadmin();
+
+
 }

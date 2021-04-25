@@ -1,21 +1,22 @@
 package com.meeting.appo.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.meeting.appo.dao.EventRoomDao;
-import com.meeting.appo.dao.EventStatusDao;
-import com.meeting.appo.dao.EventUserDao;
 import com.meeting.appo.entities.Dept;
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
 import com.meeting.appo.entities.User;
+import com.meeting.appo.services.RoomService;
+import com.meeting.appo.services.StatusService;
+import com.meeting.appo.services.UserService;
+import com.meeting.appo.utils.AdminAuthUtils;
 import com.meeting.appo.utils.Chinese2PinyinUtils;
+import com.meeting.appo.utils.SecEncodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import org.springframework.web.bind.support.SessionStatus;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -29,11 +30,11 @@ import java.util.*;
 @Controller
 public class ProfileController {
     @Autowired
-    EventStatusDao statusDao;
+    UserService userService;
     @Autowired
-    EventUserDao userDao;
+    StatusService statusService;
     @Autowired
-    EventRoomDao roomDao;
+    RoomService roomService;
 
 
     @GetMapping("/profile")
@@ -49,7 +50,7 @@ public class ProfileController {
         Date m = calendar.getTime();
         Long start_timestamp = (long)(int)(m.getTime()/1000);
         System.out.println(start_timestamp);
-        List<Status> statusList = statusDao.getStatusByUser(uid,start_timestamp);
+        List<Status> statusList = statusService.getStatusByUser(uid,start_timestamp);
         model.addAttribute("statusList",statusList);
         return "profile";
     }
@@ -63,26 +64,26 @@ public class ProfileController {
         String old_password = request.getParameter("old_password");
         String new_password = request.getParameter("new_password");
         String mobile = request.getParameter("mobile");
-        String dept = request.getParameter("dept");
+        int deptId = Integer.parseInt(request.getParameter("deptId"));
         int uid = Integer.parseInt(request.getParameter("uid"));
         boolean isAdmin = request.getParameter("admin").equals("1");
 
         //输入数据校验
-        if(username.equals("") || mobile.equals("") || dept.equals("") || old_password.equals("") ||new_password.equals("")){
+        if(username.equals("") || mobile.equals("") || old_password.equals("") ||new_password.equals("")){
             model.addAttribute("errMsg","信息不完整,用户名和部门用文字或字母,号码用数字");
             return "redirect:/profile";
         }else if(mobile.length() != 11) {
             model.addAttribute("errMsg", "手机号码长度有误");
             return "redirect:/profile";
         }
-        else if (userDao.getUserById(uid).getPassword().equals(old_password)){
+        else if (userService.getUserById(uid).getPassword().equals(old_password)){
             model.addAttribute("errMsg", "原密码有误");
             return "redirect:/profile";
         }else{
             //校验通过
             String pinyin_name = Chinese2PinyinUtils.toPinyin(username);
-            User user = new User(uid,username,new_password,mobile,dept,isAdmin,pinyin_name);
-            userDao.modUser(user);
+            User user = new User(uid,username,new_password,mobile,deptId,isAdmin,pinyin_name);
+            userService.modUser(user);
 
             //清除session信息并跳转到登陆页面
             session.invalidate();
@@ -94,13 +95,9 @@ public class ProfileController {
 
     @GetMapping("/rs_manage")
     public String toManagePage(HttpServletRequest request,Model model){
-        HttpSession session = request.getSession();
-        Map loginUser = (Map)session.getAttribute("loginUser");
-        boolean isAdmin = (boolean)loginUser.get("isAdmin");
-        if (isAdmin){
-
-            List<Dept> deptList = statusDao.getAllDept();
-            List<Room> roomList = roomDao.queryAllRooms();
+        if (AdminAuthUtils.adminAuth(request)){
+            List<Dept> deptList = statusService.getAllDept();
+            List<Room> roomList = roomService.queryAllRooms();
 
             model.addAttribute("deptList",deptList);
             model.addAttribute("roomList",roomList);
@@ -145,6 +142,7 @@ public class ProfileController {
                 throw new ParseException("开始时间小于结束时间",1);//确保开始时间大于结束时间
             }
 
+
             int rid = Integer.parseInt(request.getParameter("rid"));
             int uid = Integer.parseInt(request.getParameter("uid"));
             String participants = request.getParameter("participants");
@@ -155,7 +153,7 @@ public class ProfileController {
             Status state = new Status(new Date(),startDate,endDate,rid,participants,meetingTheme,uid,status);
 
             //查找在目标日期内,该目标房间的所有预约记录
-            List<Status> todayStatusList = statusDao.getStatusList(new SimpleDateFormat("yyyy-MM-dd").format(startDate),rid+"");
+            List<Status> todayStatusList = statusService.getStatusList(new SimpleDateFormat("yyyy-MM-dd").format(startDate),rid+"");
 
             //判断预约时间上的冲突
                 for (Status s:todayStatusList){
@@ -167,7 +165,7 @@ public class ProfileController {
                     }
                 }
 
-            statusDao.addStatus(state);
+            statusService.addStatus(state);
             statusMap.put("code",200);
             statusMap.put("msg","命令成功完成");
         } catch (ParseException e) {
@@ -185,18 +183,14 @@ public class ProfileController {
         boolean admin;
         String username = request.getParameter("username");
         String mobile = request.getParameter("mobile");
-        String dept = request.getParameter("dept");
+        int deptId = Integer.parseInt(request.getParameter("deptId"));
         String isAdmin = request.getParameter("isAdmin");
-        Map<String,String> deptMap = new HashMap<String, String>();
-        deptMap.put("1","震惊部");
-        deptMap.put("2","沸腾部");
-        deptMap.put("3","掉泪部");
-        deptMap.put("4","沉默部");
+        String password = request.getParameter("password");
 
         admin = !isAdmin.equals("0") && !isAdmin.equals("false");
 
         //注册校验
-        if(username.equals("") || mobile.equals("") || dept.equals("")){
+        if(username.equals("") || mobile.equals("") ){
             model.addAttribute("errMs","信息不完整,用户名和部门用文字或字母,号码用数字");
             request.getRequestDispatcher("/rs_manage").forward(request,response);
         }else if(mobile.length() <11){
@@ -205,10 +199,12 @@ public class ProfileController {
         }
         //校验通过
         String pinyin_name = Chinese2PinyinUtils.toPinyin(username);
-        User user = new User(username,mobile,deptMap.get(dept),new Date(),admin,pinyin_name);
-        userDao.addUser(user);
+        //密码加密器
+        String sec_pwd = SecEncodeUtils.secEncode(password);
+        User user = new User(username,sec_pwd,mobile,deptId,new Date(),admin,pinyin_name);
+        userService.addUser(user);
 
-        request.getRequestDispatcher("/rs_manage").forward(request,response);
+//        request.getRequestDispatcher("/rs_manage").forward(request,response);
         Map<String,Object> respMap = new HashMap<String,Object>();
         respMap.put("code",200);
         respMap.put("success",true);
@@ -219,13 +215,13 @@ public class ProfileController {
     @PostMapping("/profile/addRoom")
     public void addRoom(HttpServletRequest request){
         int flood = Integer.parseInt(request.getParameter("rflood"));
-        String serial = (String)request.getParameter("rserial");
+        String serial = request.getParameter("rserial");
         int seats = Integer.parseInt(request.getParameter("seats"));
         boolean available = !request.getParameter("isAvailable").equals("");
-        String comm = (String)request.getParameter("comm");
+        String comm = request.getParameter("comm");
 
         Room room = new Room(flood,serial,seats,available,comm,new Date());
-        roomDao.addRoom(room);
+        roomService.addRoom(room);
         System.out.println(room.toString());
 
     }
@@ -255,17 +251,12 @@ public class ProfileController {
 
         Dept dept = new Dept(dept_name,before_level_id,after_level_id,comment,is_first_level);
 
-        userDao.addDept(dept);
+        userService.addDept(dept);
 
         HashMap<String, String> map = new HashMap<>();
         map.put("msg","ok");
         return new ObjectMapper().writeValueAsString(map);
     }
 
-
-    @GetMapping("/test")
-    public String chooseTemp(){
-        return "admin";
-    }
 
 }

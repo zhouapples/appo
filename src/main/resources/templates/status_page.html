@@ -266,7 +266,9 @@
                             alert("预约冲突,请联系 "+result.user+" "+result.mobile);
                         }else{
                             alert(result.msg);
+                            window.location.reload();
                             $(this).parent()[0].reset();
+
                         }
 
                         },
@@ -316,7 +318,7 @@
     </script>
 
     <script>
-        $(".each_item2").click(function(){
+        $(".each_item2").mouseover(function(){
             starttime = $(this).children("#starttime").text();
             endtime = $(this).children("#endtime").text();
             // alert(starttime+"-------"+endtime);

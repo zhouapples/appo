@@ -5,14 +5,35 @@
 <mapper namespace="com.meeting.appo.dao.EventRoomDao">
     <insert id="addRoom" parameterType="com.meeting.appo.entities.Room">
         INSERT INTO tb_rooms(rflood,rserial,seats,isAvailable,comm,create_date)
-        VALUES(#{room.rflood},#{room.rserial},#{room.seats},#{room.isAvailable},#{room.comm},#{room.create_date})
+        VALUES(#{room.rflood},#{room.rserial},#{room.seats},#{room.available},#{room.comm},#{room.create_date})
     </insert>
 
     <select id="queryAllRooms" resultType="com.meeting.appo.entities.Room">
-        select rid,rflood,rserial,comm from appo.tb_rooms;
+        select rid,rflood,rserial,seats,Available,comm,create_date from appo.tb_rooms where available=1;
     </select>
 
+    <select id="queryAllRoomsByadmin" resultType="com.meeting.appo.entities.Room">
+        select rid,rflood,rserial,seats,Available,comm,create_date from appo.tb_rooms;
+    </select>
 
+    <select id="getRoomCount" resultType="int">
+        select count(*) from appo.tb_rooms
+    </select>
 
+    <update id="modRoom" parameterType="com.meeting.appo.entities.Room">
+        update appo.tb_rooms
+        set
+            rflood=#{rflood},
+            rserial=#{rserial},
+            seats=#{seats},
+            Available=#{available},
+            comm=#{comm}
+        where rid=#{rid}
+
+    </update>
+
+    <delete id="rmRoom" parameterType="int">
+        delete from tb_rooms where rid=#{rid}
+    </delete>
 
 </mapper>

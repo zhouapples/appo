@@ -16,6 +16,8 @@ public class MyMvcConfig implements WebMvcConfigurer {
                 "/",
                 "/detail",
                 "/login",
+                "/regist",
+                "/druid/*",
                 "/*/*.js",
                 "/*/*.css",
                 "/*/*.otf",
@@ -36,5 +38,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
         registry.addViewController("/").setViewName("index");
         registry.addViewController("/index").setViewName("index");
         registry.addViewController("/login").setViewName("login");
+        registry.addViewController("/druid").setViewName("druid/login.html");  //druid监控页面
     }
 }

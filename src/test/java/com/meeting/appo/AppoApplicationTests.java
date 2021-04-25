@@ -11,11 +11,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-import java.util.EventListener;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.activation.DataSource;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @SpringBootTest
 class AppoApplicationTests {
@@ -79,6 +82,23 @@ class AppoApplicationTests {
     public void getStatusBySid(){
         Status s = statusDao.getStatusBySid(1);
         System.out.println(s);
+
+    }
+
+
+    @Test
+    public void getHintData(){
+        Map<String,Object> objects = statusDao.showHistogram();
+        System.out.println(objects);
+    }
+
+    @Test
+    public void getWeek() throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(sdf.parse("2021-03-24"));
+        int w = cal.get(Calendar.DAY_OF_WEEK)-1<0?0:cal.get(Calendar.DAY_OF_WEEK)-1;
+        System.out.println(w);
 
     }
 

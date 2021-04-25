@@ -2,13 +2,11 @@ package com.meeting.appo.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.meeting.appo.dao.EventRoomDao;
-import com.meeting.appo.dao.EventStatusDao;
-import com.meeting.appo.dao.EventUserDao;
 import com.meeting.appo.entities.Room;
 import com.meeting.appo.entities.Status;
 
-
+import com.meeting.appo.services.RoomService;
+import com.meeting.appo.services.StatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
@@ -24,12 +23,13 @@ import java.util.Map;
 
 @Controller
 public class DetailController {
+
     @Autowired
-    EventStatusDao statusDao;
+    StatusService statusService;
     @Autowired
-    EventUserDao userDao;
-    @Autowired
-    EventRoomDao roomDao;
+    RoomService roomService;
+
+
 
     @GetMapping("/detail")
     public String toDetailPage(HttpServletRequest request, Model model)  {
@@ -37,12 +37,14 @@ public class DetailController {
         String day = request.getParameter("date");
         String rid = request.getParameter("rid");
 
-        List<Status> statusList = statusDao.getStatusList(day,rid);
-        List<Room> roomsList = statusDao.getRooms();
+
+        List<Status> statusList = statusService.getStatusList(day,rid);
+
+        List<Room> roomsList = roomService.queryAllRooms();
 
         model.addAttribute("statusList",statusList);
         model.addAttribute("rooms",roomsList);
-        System.out.println(roomsList);
+//        System.out.println(roomsList);
         model.addAttribute("msg",day);
         return "status_page";
     }
@@ -53,7 +55,7 @@ public class DetailController {
         int sid = Integer.parseInt(request.getParameter("sid"));
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
-        Status status = statusDao.getStatusBySid(sid);
+        Status status = statusService.getStatusBySid(sid);
 
         Map<String,Object> tempMap = new HashMap<String, Object>();
         tempMap.put("sid",status.getSid());
@@ -69,19 +71,27 @@ public class DetailController {
         return new ObjectMapper().writeValueAsString(tempMap);
     }
 
-
+    @ResponseBody
     @DeleteMapping("/profile")
-    public void deleteStatusById(HttpServletRequest request, HttpServletResponse response){
+    public String deleteStatusById(HttpServletRequest request, HttpSession session) throws JsonProcessingException {
         String sidStr = request.getParameter("sid");
+        Map<String,Object> userInfoObj = (Map<String,Object>) session.getAttribute("loginUser");
+        int uid = (int)userInfoObj.get("uid");
+
         if (sidStr!=null){
             int sid = Integer.parseInt(sidStr);
-            statusDao.rmStatusById(sid);
+            statusService.rmStatusById(sid,uid);
 
             System.out.println("取得sidStr值为:"+sidStr);
 
         }
-
+        Map<String, Object> msgMap = new HashMap<>();
+        msgMap.put("msg","删除成功");
+        return new ObjectMapper().writeValueAsString(msgMap);
     }
+
+
+
 
 
 

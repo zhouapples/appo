@@ -1,0 +1,7 @@
+变量名			备注/解析--对象类型
+
+user_Y2FuZ2ppbmdrb25n	用户cangjingkong的base64编码缓存--User
+2021-04-13_null_statusList	2021-04-13当天全部预约信息--List
+2021-04-13_1_statusList	2021-04-13当天1号房间所有预约信息--List
+allRoomsList		所有房间列表--List
+uid9_30day_status   用户9近30天的预约记录

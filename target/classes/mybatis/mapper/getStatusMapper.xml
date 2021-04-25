@@ -62,17 +62,21 @@
         a.uid uid,
         a.username username,
         a.mobile mobile,
+        a.isAdmin isAdmin,
+        a.password password,
         b.dept_name dept_name,
         b.did did
         FROM
         tb_users a LEFT JOIN
         tb_depts b ON a.deptId=b.did
-        where a.pinyin_name=#{pinyin_name}
+        where a.username=#{username} or a.pinyin_name=#{username}
     </select>
     <resultMap id="getUserByUsername" type="com.meeting.appo.entities.User">
         <result property="uid" column="uid" />
         <result property="username" column="username" />
         <result property="mobile" column="mobile" />
+        <result property="admin" column="isAdmin" />
+        <result property="password" column="password" />
         <association property="dept" javaType="com.meeting.appo.entities.Dept" column="deptId">
             <result property="did" column="did"/>
             <result property="dept_name" column="dept_name"/>
@@ -173,7 +177,68 @@
 
 
     <select id="getAllDept" resultType="com.meeting.appo.entities.Dept">
-        select did,dept_name from appo.tb_depts;
+        select * from appo.tb_depts;
     </select>
 
+
+
+
+    <select id="adminStatusList" resultMap="adminStatusList">
+        SELECT
+        a.sid,
+        a.start_date start_date,
+        a.end_date end_date,
+        a.meeting_theme meeting_theme,
+        a.status status,
+        a.rid rid,
+        b.username username,
+        b.mobile mobile,
+        b.deptId deptId,
+        c.rserial rserial
+        FROM tb_status a LEFT JOIN tb_users b on a.uid=b.uid LEFT JOIN tb_rooms c ON a.rid=c.rid
+        ORDER BY a.create_date desc limit #{start},#{end}
+    </select>
+    <resultMap id="adminStatusList" type="com.meeting.appo.entities.Status">
+        <result property="sid" column="sid" />
+        <result property="start_date" column="start_date" />
+        <result property="end_date" column="end_date" />
+        <result property="meeting_theme" column="meeting_theme" />
+        <result property="uid" column="uid" />
+        <result property="rid" column="rid" />
+        <result property="status" column="status" />
+        <association property="user" javaType="com.meeting.appo.entities.User">
+            <result property="uid" column="uid"/>
+            <result property="username" column="username"/>
+            <result property="mobile" column="mobile"/>
+            <result property="deptId" column="deptId"/>
+        </association>
+        <association property="room" javaType="com.meeting.appo.entities.Room">
+            <result property="rserial" column="rserial"/>
+            <result property="rid" column="rid"/>
+        </association>
+    </resultMap>
+
+
+    <select id="getStatusCount" resultType="int">
+        select count(*) from appo.tb_status
+        <where>
+            <if test="_parameter != null">
+                Date(start_date)=#{today}
+            </if>
+        </where>
+    </select>
+
+    <update id="setStatusState">
+        update appo.tb_status set status=#{state} where sid=#{sid}
+    </update>
+
+
+    <select id="showHistogram" resultType="map" >
+        SELECT
+        DATE_FORMAT(start_date,"%Y-%m-%d") dateStr,
+        COUNT(1) count
+        from tb_status
+        where YEARWEEK(start_date,1)=YEARWEEK(now())
+        GROUP BY DATE_FORMAT(start_date,"%Y-%m-%d")
+    </select>
 </mapper>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link href="css/materialdesignicons.min.css" rel="stylesheet">
+<link href="css/style.min.css" rel="stylesheet">
+</head>
+  
+<body>
+<div class="lyear-layout-web">
+  <div class="lyear-layout-container">
+    <!--左侧导航-->
+    <aside th:insert="admin::left_bar"></aside>
+    <!--End 左侧导航-->
+    
+    <!--头部信息-->
+    <header class="lyear-layout-header">
+      
+      <nav class="navbar navbar-default">
+        <div class="topbar">
+          
+          <div class="topbar-left">
+            <div class="lyear-aside-toggler">
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+              <span class="lyear-toggler-bar"></span>
+            </div>
+            <span class="navbar-page-title"> 用户管理 </span>
+          </div>
+          
+          <ul th:insert="admin::profile_bar"></ul>
+          
+        </div>
+      </nav>
+      
+    </header>
+    <!--End 头部信息-->
+    
+    <!--页面主要内容-->
+    <main class="lyear-layout-content">
+      
+      <div class="container-fluid">
+        
+        <div class="row">
+          <div class="col-lg-12">
+            <div class="card">
+
+              <div class="card-body">
+                
+                <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>序号</th>
+                        <th>姓名</th>
+                        <th>登录名</th>
+                        <th>电话</th>
+                        <th>部门</th>
+                        <th>注册日期</th>
+                        <th>管理员</th>
+                        <th>状态</th>
+                        <th>操作</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr th:each="user,idx:${userList}" class="each_user">
+                        <td th:text="${idx.index}+1">1</td>
+                        <td th:text="${user.username}">第01章 天涯思君不可忘</td>
+                        <td th:text="${user.pinyin_name}">第01章 天涯思君不可忘</td>
+                        <td th:text="${user.mobile}">第01章 天涯思君不可忘</td>
+                        <td th:if="${user.dept==null} ">null</td>
+                        <td th:if="${user.dept!=null} " th:text="${user.dept.dept_name}">第01章 天涯思君不可忘</td>
+                        <td th:text="${#dates.format(user.create_date, 'yyyy-MM-dd')}">第01章 天涯思君不可忘</td>
+                        <td th:if="${user.Admin eq true}">Yes</td>
+                        <td th:if="${user.Admin eq false}">No</td>
+                        <td th:if="${user.available eq true}">可用</td>
+                        <td th:if="${user.available eq false}">不可用</td>
+                        <input id="u_id" type="hidden" name="uid" th:value="${user.uid}"/>
+
+                        <td class="operation">
+                            <a id="edit_user" class="btn btn-xs btn-default"  title="编辑" data-toggle="tooltip"><i class="mdi mdi-pencil">编辑</i></a>
+                            <a id="reset_pwd" class="btn btn-xs btn-default"  title="默认123456" data-toggle="tooltip"><i class="mdi mdi-pencil">密码重置</i></a>
+                            <a id="delete_user" class="btn btn-xs btn-default"  title="删除" data-toggle="tooltip"><i class="mdi mdi-window-close">删除</i></a>
+                        </td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+                </div>
+                <hr>
+
+
+
+
+
+
+                  <form action="/profile/addUser" class="boxes" method="post" style="padding: 20px 10px;" id="addUser">
+                      <input name="uid" type="hidden" id="uid"/>
+                      <!-- End .single_form -->
+                      <div class="form-group">
+                          <label for="username">用户名</label>
+                          <input class="form-control" id="username"  name="username"  type="text">
+                      </div>
+
+                      <div class="form-group">
+                          <label for="username">密码</label>
+                          <input class="form-control" id="password"  name="password"  type="password">
+                      </div>
+                      <!-- End .single_form -->
+                      <div class="form-group">
+                          <label for="mobile">手机号码</label>
+                          <input class="form-control" id="mobile"  name="mobile"  type="text">
+                      </div>
+
+                      <div class="form-group">
+                          <label for="dept">部门</label>
+                          <select class="form-control" id="dept" name="dept">
+                              <option th:each="d,i:${deptList}" th:value="${d.did}" th:text="${d.dept_name}">沉默部</option>
+                          </select>
+                      </div>
+                      <div class="form-group">
+                          <label for="isAdmin">是否管理员</label>
+                          <select class="form-control" id="isAdmin" name="isAdmin">
+                              <option  value="1">是</option>
+                              <option selected value="0">否</option>
+                          </select>
+                      </div>
+
+                      <div class="form-group">
+                          <label for="available">是否可用</label>
+                          <select class="form-control" id="available" name="available">
+                              <option  value="1" selected>是</option>
+                              <option value="0">否</option>
+                          </select>
+                      </div>
+                      <!-- End .single_form -->
+                      <input class="btn btn-primary search width-100-100 subBtnUser"  type="button" value="添加"/>
+                  </form>
+
+
+
+
+
+
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+    </main>
+    <!--End 页面主要内容-->
+  </div>
+</div>
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/perfect-scrollbar.min.js"></script>
+<script type="text/javascript" src="js/main.min.js"></script>
+<script type="text/javascript">
+$(function(){
+    $('.search-bar .dropdown-menu a').click(function() {
+        var field = $(this).data('field') || '';
+        $('#search-field').val(field);
+        $('#search-btn').html($(this).text() + ' <span class="caret"></span>');
+    });
+
+});
+
+</script>
+
+
+<script>
+  $(".each_user").children(".operation").children("#edit_user").click(function () {
+      $("#uid").val($(this).parent().parent().find("input").val());
+      $("#username").val($(this).parent().parent().find("td").eq(1).text());
+      $("#mobile").val($(this).parent().parent().find("td").eq(3).text());
+      $("#password").parent().remove();
+      $("#addUser").attr({"action":"/setUserState","method":"put"});
+      $(".subBtnUser").val("更新");
+  });
+
+
+  $(".each_user").children(".operation").children("#delete_user").click(function () {
+      uid=$(this).parent().parent().find("input").val();
+
+        $.ajax({
+          url:"/setUserState",
+          type: 'DELETE',
+          data:{"uid":uid},
+          success:function () {
+            alert("删除成功");
+              window.location.reload();
+          }
+        })
+  });
+
+</script>
+
+<script>
+
+    $(".subBtnUser").click(function () {
+        if ($(this).val()=="添加"){
+            dataU = {
+                "username":$("#username").val(),
+                "password":$("#password").val(),
+                "mobile":$("#mobile").val(),
+                "deptId":$("#dept").val(),
+                "isAdmin":$("#isAdmin").val(),
+                "available":$("#available").val(),
+            };
+            $.ajax({
+                url: $(this).parent().attr("action"),
+                type: 'POST',
+                data:dataU,
+                dataType:"text",
+                success: function(result) {
+                    alert(result);
+                    window.location.reload();
+                }
+            });
+            // console.log(result);
+            $(this).parent()[0].reset();    //表单重置
+        }else{
+
+            dataU = {
+                "uid":$("#uid").val(),
+                "username":$("#username").val(),
+                "mobile":$("#mobile").val(),
+                "deptId":$("#dept ").val(),
+                "isAdmin":$("#isAdmin").val(),
+                "available":$("#available").val(),
+            };
+
+            $.ajax({
+                url: $(this).parent().attr("action"),
+                type: 'PUT',
+                data:dataU,
+                success: function(result) {
+                    alert("修改成功");
+                    window.location.reload();
+                }
+            });
+
+
+
+        }
+        $(this).parent()[0].reset();    //表单重置
+    });
+</script>
+
+<script>
+    $(".each_user").children(".operation").children("#reset_pwd").click(function () {
+        data = {"uid":$("#u_id").val()};
+        alert(data.uid);
+        $.ajax({
+            url: "/resetPwd",
+            type: 'POST',
+            data:data,
+            success: function(result) {
+                alert("重置成功");
+                window.location.reload();
+            }
+        });
+    })
+
+</script>
+
+
+
+</body>
+</html>

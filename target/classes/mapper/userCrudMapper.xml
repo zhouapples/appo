@@ -5,13 +5,21 @@
 <mapper namespace="com.meeting.appo.dao.EventUserDao">
 
     <insert id="addUser" parameterType="com.meeting.appo.entities.User">
-        insert into appo.tb_users(username, mobile, dept, create_date, isAdmin, pinyin_name)
-        VALUES(#{user.username},#{user.mobile},#{user.dept},#{user.create_date},#{user.Admin},#{user.pinyin_name})
+        insert into appo.tb_users(username, password,mobile, deptId, create_date, isAdmin, pinyin_name)
+        VALUES(#{user.username},#{user.password},#{user.mobile},#{user.deptId},#{user.create_date},#{user.Admin},#{user.pinyin_name})
     </insert>
 
-    <update id="modUser" parameterType="map">
-        update appo.tb_users set username=#{user.username},password=#{user.password},mobile=#{user.mobile},dept=#{user.dept},pinyin_name=#{user.pinyin_name} where uid=#{user.uid}
-    </update>
+    <update id="modUser" parameterType="com.meeting.appo.entities.User">
+        update appo.tb_users
+        set
+            username=#{username},
+            mobile=#{mobile},
+            deptId=#{deptId},
+            isAdmin=#{Admin},
+            available=#{available},
+            pinyin_name=#{pinyin_name}
+        where uid=#{uid}
+</update>
 
     <insert id="addDept" parameterType="com.meeting.appo.entities.Dept">
         insert into appo.tb_depts(dept_name,before_level_id,after_level_id,comment,is_first_level)
@@ -21,5 +29,70 @@
     <select id="getUserById" resultType="com.meeting.appo.entities.User">
         select * from appo.tb_users where uid=#{uid}
     </select>
+
+    <select id="getUserCount" resultType="int">
+        select count(*) from appo.tb_users
+    </select>
+
+    <select id="queryAllUsers" resultMap="queryAllUsers">
+        select
+               a.uid uid,
+               a.username username,
+               a.mobile mobile,
+               a.deptId deptId,
+               b.dept_name dept_name,
+               b.did did,
+               a.create_date create_date,
+               a.isAdmin isAdmin,
+               a.available,
+               a.pinyin_name pinyin_name
+        FROM
+             appo.tb_users a LEFT JOIN appo.tb_depts b
+            on
+                a.deptId=b.did
+    </select>
+    <resultMap id="queryAllUsers" type="com.meeting.appo.entities.User">
+        <result property="uid" column="uid"></result>
+        <result property="username" column="username"></result>
+        <result property="mobile" column="mobile"></result>
+        <result property="deptId" column="deptId"></result>
+        <result property="create_date" column="create_date"></result>
+        <result property="Admin" column="isAdmin"></result>
+        <result property="available" column="uid"></result>
+        <result property="pinyin_name" column="pinyin_name"></result>
+        <association property="dept" javaType="com.meeting.appo.entities.Dept">
+            <result property="did" column="did"/>
+            <result property="dept_name" column="dept_name"/>
+        </association>
+    </resultMap>
+
+    <delete id="rmUser" parameterType="int">
+        delete from appo.tb_users where uid=#{uid}
+    </delete>
+
+
+    <update id="resetPwd">
+        update appo.tb_users set password=#{pwd} where uid=#{uid}
+    </update>
+
+
+
+    <update id="modDept" parameterType="com.meeting.appo.entities.Dept">
+        update
+            appo.tb_depts
+        set
+            dept_name=#{dept.dept_name},
+            before_level_id=#{dept.before_level_id},
+            after_level_id=#{dept.after_level_id},
+            comment=#{dept.comment},
+            is_first_level=#{dept.is_first_level}
+        where
+              did=#{dept.did}
+    </update>
+
+    <delete id="rmDept" parameterType="int">
+        delete from appo.tb_depts where did=#{did}
+    </delete>
+
 
 </mapper>
